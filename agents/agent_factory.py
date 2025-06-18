@@ -18,9 +18,12 @@ class ThreatIntelAgentFactory:
     def __init__(self, config: Config):
         self.config = config
         self.llm = ChatGoogleGenerativeAI(
-            model=config.LLM_MODEL,
-            temperature=config.LLM_TEMPERATURE
-        )
+            #model=config.LLM_MODEL,
+            model = 'gemini-2.0-flash-lite',
+            temperature=config.LLM_TEMPERATURE,
+            google_api_key=config.GOOGLE_API_KEY
+            )
+        print("⚙️ Using LLM_MODEL:", config.LLM_MODEL)
 
         # Initialize tools
         self.ip_intel_tool = IPIntelligenceTool(config)
