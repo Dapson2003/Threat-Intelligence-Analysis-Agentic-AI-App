@@ -15,7 +15,7 @@ class Config:
         self.LLM_MODEL = os.getenv('LLM_MODEL', 'gemini-2.0-flash-lite')
         self.LLM_TEMPERATURE = float(os.getenv('LLM_TEMPERATURE', 0.05))
         self._validate_config()
-        print(self.LLM_MODEL)
+        #print(self.LLM_MODEL)
 
     def _validate_config(self):
         errors = []

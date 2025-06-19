@@ -13,17 +13,19 @@ from tools.threat_intelligence_tools import GeolocationTool
 from tools.threat_intelligence_tools import MalwareAnalysisTool
 from tools.threat_intelligence_tools import ThreatScoreAssessmentTool
 from tools.threat_intelligence_tools import Retrieve_IP_Info
+from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
+from langchain_core.callbacks import StdOutCallbackHandler
 
 class ThreatIntelAgentFactory:
     def __init__(self, config: Config):
         self.config = config
         self.llm = ChatGoogleGenerativeAI(
-            #model=config.LLM_MODEL,
-            model = 'gemini-2.0-flash-lite',
+            model=config.LLM_MODEL,
+            #model = 'gemini-2.0-flash-lite',
             temperature=config.LLM_TEMPERATURE,
             google_api_key=config.GOOGLE_API_KEY
             )
-        print("⚙️ Using LLM_MODEL:", config.LLM_MODEL)
+        #print("⚙️ Using LLM_MODEL:", config.LLM_MODEL)
 
         # Initialize tools
         self.ip_intel_tool = IPIntelligenceTool(config)
@@ -73,8 +75,9 @@ class ThreatIntelAgentFactory:
 
     def create_plan_execute_agent(self):
         """Create a Plan-and-Execute agent"""
+        handler = StdOutCallbackHandler()
         tools = self._create_tools()
-        planner = load_chat_planner(self.llm)
-        executor = load_agent_executor(self.llm, tools, verbose=True)
+        planner = load_chat_planner(self.llm,handler)
+        executor = load_agent_executor(self.llm,handler, tools, verbose=True)
 
         return PlanAndExecute(planner=planner, executor=executor)
