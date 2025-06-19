@@ -7,6 +7,7 @@ from msticpy.sectools.vtlookupv3.vtlookupv3 import VTLookupV3
 from config import Config
 from tools.BaseThreatIntelligenceTool import BaseThreatIntelligenceTool
 import os
+import pandas as pd
 
 class IPIntelligenceTool(BaseThreatIntelligenceTool):
     def __init__(self, config: Optional[Config] = None):
@@ -88,23 +89,29 @@ class MalwareAnalysisTool(BaseThreatIntelligenceTool):
         self.vt_key = config.VIRUSTOTAL_KEY
 
     def process(self, file_hash: str) -> Dict[str, Any]:
-        try:
-            vt_lookup = VTLookupV3(self.vt_key)
-            result = vt_lookup.get_object(file_hash, "file")
+        vt_lookup = VTLookupV3(self.vt_key)
+        result = vt_lookup.get_object(file_hash, "file")
+        df = pd.DataFrame(result)
+        j = df.to_string()
+        print(result)
+        return {"error":j}
+        # try:
+        #     vt_lookup = VTLookupV3(self.vt_key)
+        #     result = vt_lookup.get_object(file_hash, "file")
 
-            if result is None:
-                return {"error": "No malware information found"}
+        #     if result is None:
+        #         return {"error": "No malware information found"}
 
-            return {
-                "hash": file_hash,
-                "detection_rate": result.detection_summary,
-                "first_seen": result.first_submission_date,
-                "last_seen": result.last_submission_date,
-                "file_type": result.type,
-                "reputation": result.reputation
-            }
-        except Exception as e:
-            return {"error": str(e)}
+        #     return {
+        #         "hash": file_hash,
+        #         "detection_rate": result.detection_summary,
+        #         "first_seen": result.first_submission_date,
+        #         "last_seen": result.last_submission_date,
+        #         "file_type": result.type,
+        #         "reputation": result.reputation
+        #     }
+        # except Exception as e:
+        #     return {"error": str(e)}
 
 class ThreatScoreAssessmentTool(BaseThreatIntelligenceTool):
     def __init__(self, config: Config):
