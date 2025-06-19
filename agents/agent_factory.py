@@ -6,6 +6,7 @@ from langchain_experimental.plan_and_execute import (
     load_agent_executor,
     load_chat_planner
 )
+from langchain_ollama import OllamaLLM
 
 from config import Config
 from tools.threat_intelligence_tools import IPIntelligenceTool
@@ -19,11 +20,13 @@ from langchain_core.callbacks import StdOutCallbackHandler
 class ThreatIntelAgentFactory:
     def __init__(self, config: Config):
         self.config = config
-        self.llm = ChatGoogleGenerativeAI(
-            model=config.LLM_MODEL,
-            #model = 'gemini-2.0-flash-lite',
-            temperature=config.LLM_TEMPERATURE,
-            google_api_key=config.GOOGLE_API_KEY
+        handler = StdOutCallbackHandler()
+        self.llm = OllamaLLM(
+            #model=config.LLM_MODEL,
+            model = 'qwen3:32b',
+            #temperature=config.LLM_TEMPERATURE,
+            callbacks=[handler],
+            base_url="http://192.168.123.110:11434"
             )
         #print("⚙️ Using LLM_MODEL:", config.LLM_MODEL)
 
@@ -75,9 +78,8 @@ class ThreatIntelAgentFactory:
 
     def create_plan_execute_agent(self):
         """Create a Plan-and-Execute agent"""
-        handler = StdOutCallbackHandler()
         tools = self._create_tools()
-        planner = load_chat_planner(self.llm,handler)
-        executor = load_agent_executor(self.llm,handler, tools, verbose=True)
+        planner = load_chat_planner(self.llm)
+        executor = load_agent_executor(self.llm, tools, verbose=True)
 
         return PlanAndExecute(planner=planner, executor=executor)
