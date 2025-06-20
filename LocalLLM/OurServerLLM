@@ -1,0 +1,14 @@
+Sorted LLMs – Most to Least Capable
+🔢 Rank	🏷️ Model Name	🧠 Capability Summary
+1️⃣	qwen3:235b	💪 Top-tier, massive 235B model, general-purpose, highly capable
+2️⃣	llama4:128x17b	🧠 Extremely powerful aggregate LLaMA4 model, great for broad use cases
+3️⃣	qwen2.5-coder:32b	👨‍💻 Coding specialist model, optimized for programming and tool use
+4️⃣	qwen3:32b	⚖️ Strong general-purpose model, lighter than 235b but very capable
+5️⃣	llama4:16x17b	⚙️ High-end general reasoning, less aggregate power than 128x17b
+6️⃣	sciphi/triplex:latest	🔬 Science/technical reasoning-focused model, niche but powerful in STEM
+7️⃣	huihui_ai/foundation-sec-abliterated:8b-fp16	🔐 Security-tuned model, finetuned for threat intel use
+8️⃣	jonasbg/Foundation-Sec-8B:latest	🔐 Similar to above, 8B finetuned for cybersecurity context
+9️⃣	huihui_ai/foundation-sec-abliterated:8b	📉 Non-fp16 version, slightly older/lower perf than fp16 version
+🔟	granite3.2:8b	⚙️ General 8B LLM (IBM Granite), basic capability
+🟤	mxbai-embed-large:latest	❗ Embedding-only model, not for generation/chat
+⚪	nomic-embed-text:latest	❗ Text embedder, for semantic search, not LLM

@@ -22,13 +22,13 @@ class ThreatIntelAgentFactory:
         self.config = config
         handler = StdOutCallbackHandler()
         self.llm = OllamaLLM(
-            #model=config.LLM_MODEL,
-            model = 'qwen3:32b',
-            #temperature=config.LLM_TEMPERATURE,
+            model=config.LLM_MODEL,
+            #model = 'qwen3:32b',
+            temperature=config.LLM_TEMPERATURE,
             callbacks=[handler],
             base_url="http://192.168.123.110:11434"
             )
-        #print("⚙️ Using LLM_MODEL:", config.LLM_MODEL)
+        print("⚙️ Using LLM_MODEL:", config.LLM_MODEL)
 
         # Initialize tools
         self.ip_intel_tool = IPIntelligenceTool(config)
@@ -71,8 +71,20 @@ class ThreatIntelAgentFactory:
         """Create a React-style agent"""
         tools = self._create_tools()
         base_prompt = hub.pull("langchain-ai/react-agent-template")
-        prompt = base_prompt.partial(instructions="Utilize tools to answer threat intelligence queries")
-
+        #prompt = base_prompt.partial(instructions="Utilize tools to answer threat intelligence queries")
+        prompt = base_prompt.partial(
+            instructions=(
+                "You are an expert threat intelligence agent.\n\n"
+                "You MUST respond ONLY using this format:\n"
+                "Thought: <your reasoning>\n"
+                "Action: <the name of the tool to use>\n"
+                "Action Input: <the input to that tool>\n\n"
+                "NEVER answer the question directly. Only use tools.\n"
+                "If you don't have enough info, ask for clarification using tools.\n"
+                "Do NOT write explanations.\n"
+                "Respond EXACTLY in the format above."
+            )
+        )
         react_agent = create_react_agent(self.llm, tools, prompt)
         return AgentExecutor(agent=react_agent, tools=tools, verbose=True)
 
