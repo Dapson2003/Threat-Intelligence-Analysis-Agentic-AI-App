@@ -78,14 +78,14 @@ class Retrieve_IP_Info(BaseThreatIntelligenceTool):
             result = self.ti_lookup.lookup_ioc(observable=ip_address, ioc_type="ipv4", providers=["VirusTotal"])
             details = result.at[0, 'RawResult']
             comm_samples = details.get('detected_communicating_samples', [])
-            print("Retreve_lP_lnfo_Was_Called")
+            open("log.txt", "a").write("Retreve_lP_lnfo_Was_Called\n")
             if len(comm_samples) >= 15 :
                 try : 
                     self._summarize_samples(comm_samples)
-                    print("Summurizer_Was_Called")
+                    open("log.txt", "a").write("Summurizer_Was_Called\n")
                 except Exception as e :
-                    print(e)
-                    print("Summurizer_Faled")
+                    open("log.txt", "a").write("Summurizer_Faled\n")
+                    open("log.txt", "a").write("ERROR : {e}\n")
                     pass
             
             return json.dumps(comm_samples)

@@ -14,7 +14,6 @@ from tools.threat_intelligence_tools import GeolocationTool
 from tools.threat_intelligence_tools import MalwareAnalysisTool
 from tools.threat_intelligence_tools import ThreatScoreAssessmentTool
 from tools.threat_intelligence_tools import Retrieve_IP_Info
-from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain_core.callbacks import StdOutCallbackHandler
 
 class ThreatIntelAgentFactory:
@@ -25,7 +24,7 @@ class ThreatIntelAgentFactory:
             model=config.LLM_MODEL,
             #model = 'qwen3:32b',
             temperature=config.LLM_TEMPERATURE,
-            #callbacks=[handler],
+            callbacks=[handler],
             base_url="http://192.168.123.110:11434"
             )
         print("⚙️ Using LLM_MODEL:", config.LLM_MODEL)
