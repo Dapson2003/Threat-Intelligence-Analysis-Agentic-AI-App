@@ -78,9 +78,42 @@ class Retrieve_IP_Info(BaseThreatIntelligenceTool):
             result = self.ti_lookup.lookup_ioc(observable=ip_address, ioc_type="ipv4", providers=["VirusTotal"])
             details = result.at[0, 'RawResult']
             comm_samples = details.get('detected_communicating_samples', [])
+            print("Retreve_lP_lnfo_Was_Called")
+            if len(comm_samples) >= 15 :
+                try : 
+                    self._summarize_samples(comm_samples)
+                    print("Summurizer_Was_Called")
+                except Exception as e :
+                    print(e)
+                    print("Summurizer_Faled")
+                    pass
+            
             return json.dumps(comm_samples)
         except Exception as e:
             return f"IP lookup error: {str(e)}"
+    
+    def _summarize_samples(self, samples: list) -> list:
+        """Reduce sample list to a smaller summary"""
+        # Sort by 'positives' if available, else truncate
+        sorted_samples = sorted(
+            samples, 
+            key=lambda x: x.get("positives", 0), 
+            reverse=True
+        )
+
+        # Keep top 5 most positive detections
+        top_samples = sorted_samples[:5]
+
+        # Reduce each sample to key fields
+        summarized = [
+            {
+                "sha256": s.get("sha256"),
+                "positives": s.get("positives"),
+                "url": s.get("url")
+            }
+            for s in top_samples
+        ]
+        return summarized
 
 
 class MalwareAnalysisTool(BaseThreatIntelligenceTool):
