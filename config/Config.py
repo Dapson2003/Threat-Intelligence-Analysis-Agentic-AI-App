@@ -7,7 +7,7 @@ class Config:
         # Threat Intelligence Provider Keys
         self.VIRUSTOTAL_KEY = os.getenv('VIRUSTOTAL_API_KEY')
         self.IPINFO_API_KEY = os.getenv('IPINFO_API_KEY')
-
+        
         # Google API Key for LLM (Google Generative AI)
         self.GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
 

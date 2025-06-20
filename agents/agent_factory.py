@@ -74,19 +74,22 @@ class ThreatIntelAgentFactory:
         #prompt = base_prompt.partial(instructions="Utilize tools to answer threat intelligence queries")
         prompt = base_prompt.partial(
             instructions=(
-                "You are an expert threat intelligence agent.\n\n"
-                "You MUST respond ONLY using this format:\n"
+                "You are a threat intelligence assistant. Use ONLY the following format to respond:\n\n"
                 "Thought: <your reasoning>\n"
                 "Action: <the name of the tool to use>\n"
                 "Action Input: <the input to that tool>\n\n"
-                "NEVER answer the question directly. Only use tools.\n"
-                "If you don't have enough info, ask for clarification using tools.\n"
-                "Do NOT write explanations.\n"
-                "Respond EXACTLY in the format above."
+                "You must always return valid plain text — NOT JSON, NOT Python, NOT code blocks.\n"
+                "Do NOT use parentheses. Do NOT return anything else. Do NOT explain your answer.\n"
+                "Do NOT format responses as JSON or Markdown. This is NOT a chat; this is an API agent interface.\n\n"
+                "Valid Example:\n"
+                "Thought: I need to check the reputation of the IP.\n"
+                "Action: IP_Intelligence\n"
+                "Action Input: \"8.8.8.8\"\n\n"
+                "This is the ONLY correct response format. Any deviation will fail."
             )
         )
         react_agent = create_react_agent(self.llm, tools, prompt)
-        return AgentExecutor(agent=react_agent, tools=tools, verbose=True)
+        return AgentExecutor(agent=react_agent, tools=tools,max_iterations=15, early_stopping_method="generate", verbose=True,handle_parsing_errors=True)
 
     def create_plan_execute_agent(self):
         """Create a Plan-and-Execute agent"""
