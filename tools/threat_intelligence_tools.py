@@ -1,5 +1,6 @@
 import json
 import requests
+import socket
 from typing import Optional, Dict, Any
 from msticpy.sectools.tilookup import TILookup
 from msticpy.sectools.vtlookupv3.vtlookupv3 import VTLookupV3
@@ -33,14 +34,14 @@ class IPIntelligenceTool(BaseThreatIntelligenceTool):
             details = result.at[0, 'RawResult']
             samples = details
             open("log.txt", "a").write("Process IP Look UP correctly\n")
-            tempsize = 20 #(Size of return value) The look up will only return only this much
+            tempsize = 15#(Size of return value) The look up will only return only this much
             #Try to use summirizer
             try:
                 comm_samples = details.get("detected_communicating_samples", [])
                 if len(comm_samples) >= tempsize:
                     samples = self._summarize_samples(details,tempsize)
                     open("log.txt", "a").write("Summarizer_Was_Called\n")
-                    open("log.txt", "a").write(f"Summarized : {samples}\n")
+                    #open("log.txt", "a").write(f"Summarized : {samples}\n")
                     return str({
                         "ip": ip_address,
                         "detected_samples": samples,
@@ -134,31 +135,41 @@ class Retrieve_IP_Info(BaseThreatIntelligenceTool):
 
     def process(self, ip_address: str) -> str:
         """Look up IP information from Virus Total"""
-        open("log.txt", "a").write("Process Retrieve Was Called\n")
         try:
             result = self.ti_lookup.lookup_ioc(observable=ip_address, ioc_type="ipv4", providers=["VirusTotal"])
             details = result.at[0, 'RawResult']
             comm_samples = details.get('detected_communicating_samples', [])
-            open("log.txt", "a").write("Retreve_lP_lnfo_Was_Called\n")
             return json.dumps(comm_samples)
         except Exception as e:
             return f"IP lookup error: {str(e)}"
-    
+        
+class DomainToIPTool(BaseThreatIntelligenceTool):
+    def __init__(self, config: Optional[Config] = None):
+        super().__init__(config)
 
-
-
+    def process(self, domain: str) -> Dict[str, Any]:
+        """Resolves a domain name to its IP address."""
+        open("log.txt", "a").write(f"DomainToIPTool: resolving {domain}\n")
+        try:
+            ip_address = socket.gethostbyname(domain)
+            open("log.txt", "a").write(f"Resolved {domain} -> {ip_address}\n")
+            return {
+                "domain": domain,
+                "ip": ip_address
+            }
+        except socket.gaierror as e:
+            open("log.txt", "a").write(f"Failed to resolve {domain}: {e}\n")
+            return {
+                "error": f"Failed to resolve domain: {domain}",
+                "details": str(e)
+            }
+        
 class MalwareAnalysisTool(BaseThreatIntelligenceTool):
     def __init__(self, config: Config):
         self.config = config
         self.vt_key = config.VIRUSTOTAL_KEY
 
     def process(self, file_hash: str) -> Dict[str, Any]:
-        # vt_lookup = VTLookupV3(self.vt_key)
-        # result = vt_lookup.get_object(file_hash, "file")
-        # df = pd.DataFrame(result)
-        # j = df.to_string()
-        # print(result)
-        # return {"error":j}
         try:
             vt_lookup = VTLookupV3(self.vt_key)
             result = vt_lookup.get_object(file_hash, "file")
