@@ -22,6 +22,7 @@ class IPIntelligenceTool(BaseThreatIntelligenceTool):
         self.vt_key = config.VIRUSTOTAL_KEY if config else None
 
     def process(self, ip_address: str) -> Dict[str, Any]:
+        open("log.txt", "a").write("Process IP Was Called\n")
         try:
             # Virus Total IP Lookup
             result = self.ti_lookup.lookup_ioc(
@@ -30,14 +31,73 @@ class IPIntelligenceTool(BaseThreatIntelligenceTool):
                 providers=["VirusTotal"]
             )
             details = result.at[0, 'RawResult']
-
-            return {
-                "ip": ip_address,
-                "detected_samples": details.get('detected_communicating_samples', []),
-                "undetected_samples": details.get('undetected_communicating_samples', [])
-            }
+            samples = details
+            open("log.txt", "a").write("Process IP Look UP correctly\n")
+            tempsize = 20 #(Size of return value) The look up will only return only this much
+            #Try to use summirizer
+            try:
+                comm_samples = details.get("detected_communicating_samples", [])
+                if len(comm_samples) >= tempsize:
+                    samples = self._summarize_samples(details,tempsize)
+                    open("log.txt", "a").write("Summarizer_Was_Called\n")
+                    open("log.txt", "a").write(f"Summarized : {samples}\n")
+                    return str({
+                        "ip": ip_address,
+                        "detected_samples": samples,
+                        "undetected_samples": []
+                    })
+            except Exception as e:
+                open("log.txt", "a").write("Summarizer_Failed\n")
+                open("log.txt", "a").write(f"ERROR: {e}\n")
+                pass
+            
         except Exception as e:
             return {"error": str(e)}
+        
+
+        return {
+            "ip": ip_address,
+            "detected_samples": samples.get('detected_communicating_samples', []),
+            "undetected_samples": samples.get('undetected_communicating_samples', [])
+        }
+
+        
+    def _summarize_samples(self, samples, size: int = 15) -> str:
+        """Summarize top threat samples, keeping all original fields. Input can be dict or stringified dict."""
+
+        import ast
+
+        try:
+            open("log.txt", "a").write(f"Raw input type: {type(samples)}\n")
+
+            # Parse if it's a string
+            if isinstance(samples, str):
+                samples = ast.literal_eval(samples)
+                open("log.txt", "a").write("Parsed string to dict\n")
+
+            # Extract sample list
+            sample_list = samples.get('detected_communicating_samples', [])
+            open("log.txt", "a").write(f"Found {len(sample_list)} samples\n")
+
+            # Clean and sort
+            clean_samples = [s for s in sample_list if isinstance(s, dict)]
+            sorted_samples = sorted(
+                clean_samples,
+                key=lambda x: x.get("positives", 0),
+                reverse=True
+            )
+
+            # Top N (default 15)
+            top_samples = sorted_samples[:size]
+
+            # Keep all fields
+            open("log.txt", "a").write(f"Summarized count: {len(top_samples)}\n")
+            return str(top_samples)
+
+        except Exception as e:
+            open("log.txt", "a").write(f"Summarizer_Failed\nERROR: {e}\n")
+            return "[]"
+
 
 
 class GeolocationTool(BaseThreatIntelligenceTool):
@@ -74,47 +134,17 @@ class Retrieve_IP_Info(BaseThreatIntelligenceTool):
 
     def process(self, ip_address: str) -> str:
         """Look up IP information from Virus Total"""
-        open("log.txt", "a").write("Process Was Called\n")
+        open("log.txt", "a").write("Process Retrieve Was Called\n")
         try:
             result = self.ti_lookup.lookup_ioc(observable=ip_address, ioc_type="ipv4", providers=["VirusTotal"])
             details = result.at[0, 'RawResult']
             comm_samples = details.get('detected_communicating_samples', [])
             open("log.txt", "a").write("Retreve_lP_lnfo_Was_Called\n")
-            if len(comm_samples) >= 15 :
-                try : 
-                    self._summarize_samples(comm_samples)
-                    open("log.txt", "a").write("Summurizer_Was_Called\n")
-                except Exception as e :
-                    open("log.txt", "a").write("Summurizer_Faled\n")
-                    open("log.txt", "a").write(f"ERROR : {e}\n")
-                    pass
-            
             return json.dumps(comm_samples)
         except Exception as e:
             return f"IP lookup error: {str(e)}"
     
-    def _summarize_samples(self, samples: list) -> list:
-        """Reduce sample list to a smaller summary"""
-        # Sort by 'positives' if available, else truncate
-        sorted_samples = sorted(
-            samples, 
-            key=lambda x: x.get("positives", 0), 
-            reverse=True
-        )
 
-        # Keep top 5 most positive detections
-        top_samples = sorted_samples[:5]
-
-        # Reduce each sample to key fields
-        summarized = [
-            {
-                "sha256": s.get("sha256"),
-                "positives": s.get("positives"),
-                "url": s.get("url")
-            }
-            for s in top_samples
-        ]
-        return summarized
 
 
 class MalwareAnalysisTool(BaseThreatIntelligenceTool):

@@ -87,6 +87,16 @@ class ThreatIntelAgentFactory:
                 "This is the ONLY correct response format. Any deviation will fail."
             )
         )
+        # prompt = base_prompt.partial(
+        #     instructions=(
+        #         "You are a threat intelligence assistant. Your job is to select and use the available tools to answer security-related queries as efficiently as possible.\n\n"
+        #         "IMPORTANT:\n"
+        #         "- Do NOT return JSON, Markdown, or code blocks — respond only in plain text.\n"
+        #         "- Do NOT explain your reasoning outside the required format.\n"
+        #         "- Do NOT add extra commentary.\n"
+        #         "- Avoid parentheses and decorative formatting.\n\n"
+        #     )
+        # )
         react_agent = create_react_agent(self.llm, tools, prompt)
         return AgentExecutor(agent=react_agent, tools=tools,max_iterations=15, early_stopping_method="force", verbose=True,handle_parsing_errors=True)
 
