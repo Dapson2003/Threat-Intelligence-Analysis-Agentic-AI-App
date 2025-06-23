@@ -1,5 +1,5 @@
 from langchain import hub
-from langchain_google_genai import ChatGoogleGenerativeAI
+#from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.agents import Tool, AgentExecutor, create_react_agent
 from langchain_experimental.plan_and_execute import (
     PlanAndExecute,
@@ -59,10 +59,15 @@ class ThreatIntelAgentFactory:
                 func=self.threat_Score_Assessment_tool.process,
                 description="Calculate a comprehensive threat score for an IP address based on multiple intelligence sources"
             ),
+            # Tool(
+            #     name="Retrieve_IP_Info",
+            #     func=self.retrieve_IP_Info_tool.process,
+            #     description="Retrieve threat intelligence information for an IP address from VirusTotal"
+            # ),
             Tool(
-                name="Retrieve_IP_Info",
+                name="DomainToIPTool",
                 func=self.retrieve_IP_Info_tool.process,
-                description="Retrieve threat intelligence information for an IP address from VirusTotal"
+                description="Retrieve IP addresses Using Domain Name"
             ),
         ]
 
