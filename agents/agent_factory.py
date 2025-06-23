@@ -14,6 +14,7 @@ from tools.threat_intelligence_tools import GeolocationTool
 from tools.threat_intelligence_tools import MalwareAnalysisTool
 from tools.threat_intelligence_tools import ThreatScoreAssessmentTool
 from tools.threat_intelligence_tools import Retrieve_IP_Info
+from tools.threat_intelligence_tools import DomainToIPTool
 from langchain_core.callbacks import StdOutCallbackHandler
 
 class ThreatIntelAgentFactory:
@@ -35,6 +36,7 @@ class ThreatIntelAgentFactory:
         self.malware_tool = MalwareAnalysisTool(config)
         self.threat_Score_Assessment_tool = ThreatScoreAssessmentTool(config)
         self.retrieve_IP_Info_tool = Retrieve_IP_Info(config)
+        self.domain_To_IP_Tool = DomainToIPTool(config)
 
     def _create_tools(self):
         """Create LangChain tools"""
@@ -67,6 +69,7 @@ class ThreatIntelAgentFactory:
             Tool(
                 name="DomainToIPTool",
                 func=self.retrieve_IP_Info_tool.process,
+                func=self.domain_To_IP_Tool.process,
                 description="Retrieve IP addresses Using Domain Name"
             ),
         ]
