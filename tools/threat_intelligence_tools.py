@@ -74,6 +74,7 @@ class Retrieve_IP_Info(BaseThreatIntelligenceTool):
 
     def process(self, ip_address: str) -> str:
         """Look up IP information from Virus Total"""
+        open("log.txt", "a").write("Process Was Called\n")
         try:
             result = self.ti_lookup.lookup_ioc(observable=ip_address, ioc_type="ipv4", providers=["VirusTotal"])
             details = result.at[0, 'RawResult']
@@ -85,7 +86,7 @@ class Retrieve_IP_Info(BaseThreatIntelligenceTool):
                     open("log.txt", "a").write("Summurizer_Was_Called\n")
                 except Exception as e :
                     open("log.txt", "a").write("Summurizer_Faled\n")
-                    open("log.txt", "a").write("ERROR : {e}\n")
+                    open("log.txt", "a").write(f"ERROR : {e}\n")
                     pass
             
             return json.dumps(comm_samples)
