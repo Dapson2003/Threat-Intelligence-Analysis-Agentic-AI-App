@@ -125,28 +125,11 @@ class GeolocationTool(BaseThreatIntelligenceTool):
             }
         except requests.RequestException as e:
             return {"error": f"Geolocation lookup failed: {str(e)}"}
-
-class Retrieve_IP_Info(BaseThreatIntelligenceTool):
-    def __init__(self, config: Config):
-        super().__init__(config)
-        self.config = config
-        self.ti_lookup = TILookup()
-        self.vt_key = config.VIRUSTOTAL_KEY if config else None
-
-    def process(self, ip_address: str) -> str:
-        """Look up IP information from Virus Total"""
-        try:
-            result = self.ti_lookup.lookup_ioc(observable=ip_address, ioc_type="ipv4", providers=["VirusTotal"])
-            details = result.at[0, 'RawResult']
-            comm_samples = details.get('detected_communicating_samples', [])
-            return json.dumps(comm_samples)
-        except Exception as e:
-            return f"IP lookup error: {str(e)}"
         
 class DomainToIPTool(BaseThreatIntelligenceTool):
     def __init__(self, config: Optional[Config] = None):
         super().__init__(config)
-
+        open("log.txt", "a").write(f"DomainToIPTool: Called\n")
     def process(self, domain: str) -> Dict[str, Any]:
         """Resolves a domain name to its IP address."""
         open("log.txt", "a").write(f"DomainToIPTool: resolving {domain}\n")
@@ -298,3 +281,20 @@ class ThreatScoreCalculator:
                 "geolocation": geolocation
             }
         }
+        
+class Retrieve_IP_Info(BaseThreatIntelligenceTool):
+    def __init__(self, config: Config):
+        super().__init__(config)
+        self.config = config
+        self.ti_lookup = TILookup()
+        self.vt_key = config.VIRUSTOTAL_KEY if config else None
+
+    def process(self, ip_address: str) -> str:
+        """Look up IP information from Virus Total"""
+        try:
+            result = self.ti_lookup.lookup_ioc(observable=ip_address, ioc_type="ipv4", providers=["VirusTotal"])
+            details = result.at[0, 'RawResult']
+            comm_samples = details.get('detected_communicating_samples', [])
+            return json.dumps(comm_samples)
+        except Exception as e:
+            return f"IP lookup error: {str(e)}"
