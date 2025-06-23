@@ -1,0 +1,91 @@
+Sorted LLMs – Most to Least Capable
+🔢 Rank	🏷️ Model Name	🧠 Capability Summary
+1️⃣	qwen3:235b	💪 Top-tier, massive 235B model, general-purpose, highly capable
+2️⃣	llama4:128x17b	🧠 Extremely powerful aggregate LLaMA4 model, great for broad use cases
+3️⃣	qwen2.5-coder:32b	👨‍💻 Coding specialist model, optimized for programming and tool use
+4️⃣	qwen3:32b	⚖️ Strong general-purpose model, lighter than 235b but very capable
+5️⃣	llama4:16x17b	⚙️ High-end general reasoning, less aggregate power than 128x17b
+6️⃣	sciphi/triplex:latest	🔬 Science/technical reasoning-focused model, niche but powerful in STEM
+7️⃣	huihui_ai/foundation-sec-abliterated:8b-fp16	🔐 Security-tuned model, finetuned for threat intel use
+8️⃣	jonasbg/Foundation-Sec-8B:latest	🔐 Similar to above, 8B finetuned for cybersecurity context
+9️⃣	huihui_ai/foundation-sec-abliterated:8b	📉 Non-fp16 version, slightly older/lower perf than fp16 version
+🔟	granite3.2:8b	⚙️ General 8B LLM (IBM Granite), basic capability
+🟤	mxbai-embed-large:latest	❗ Embedding-only model, not for generation/chat
+⚪	nomic-embed-text:latest	❗ Text embedder, for semantic search, not LLM
+
+correct action log :
+USR01 : 8.8.8.8
+
+> Entering new AgentExecutor chain...
+```
+Thought: Do I need to use a tool? Yes
+Action: Geolocation
+Action Input: 8.8.8.8{'ip': '8.8.8.8', 'city': 'Mountain View', 'region': 'California', 'country': 'US', 'location': '37.4056,-122.0775', 'organization': 'AS15169 Google LLC'}Do I need to use a tool? Yes
+Action: Threat_Score_Assessment
+Observables processed: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:03<00:00,  3.69s/obs]
+{"threat_score": 10, "details": {"malicious_samples_count": 100, "location": {"city": "Mountain View", "region": "California", "country": "US", "location": "37.4056,-122.0775", "org": "AS15169 Google LLC"}, "risk_assessment": "Medium"}}Do I need to use a tool? No
+Final Answer: The IP address 8.8.8.8 is located in Mountain View, California, US, and is associated with Google LLC. The threat score is 10, with a medium risk assessment.
+
+
+> Finished chain.
+
+---------------------------------------------------------------------------
+USR02 : c0202cf6aeab8437c638533d14563d35
+
+> Entering new AgentExecutor chain...
+Thought: Do I need to use a tool? Yes
+Action: Malware_Analysis
+Action Input: c0202cf6aeab8437c638533d14563d35{'error': "'DataFrame' object has no attribute 'detection_summary'"}Do I need to use a tool? No
+Final Answer: I encountered an error while analyzing the file hash. The analysis failed.
+
+
+> Finished chain.
+---------------------------------------------------------------------------
+USR03 : Perform a full threat analysis on the IP 185.220.101.42
+> Entering new AgentExecutor chain...
+Thought: Do I need to use a tool? Yes
+Action: Threat_Score_Assessment
+Observables processed: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:00<00:00,  1.43obs/s]
+{"threat_score": 10, "details": {"malicious_samples_count": 100, "location": {"city": "Berlin", "region": "State of Berlin", "country": "DE", "location": "52.5244,13.4105", "org": "AS60729 Stiftung Erneuerbare Freiheit"}, "risk_assessment": "Medium"}}Do I need to use a tool? No
+Final Answer: The IP address 185.220.101.42 has a threat score of 10, indicating a medium risk. It has been associated with 100 malicious samples and is geolocated in Berlin, Germany. The organization associated with this IP is AS60729 Stiftung Erneuerbare Freiheit.
+
+
+> Finished chain.
+---------------------------------------------------------------------------
+USR04 : > Entering new AgentExecutor chain...
+Thought: I need to check the reputation of the IP.
+Action: IP_Intelligence
+Observables processed: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:00<00:00,  2.07obs/s]
+{'ip': '77.246.107.91', 'detected_samples': [{'date': '2023-09-27 07:25:59', 'positives': 38, 'sha256': '666271544af5f211b51e7dc0330cb3bba240c5ed7989f16eebd9c6bc2fdf04fe', 'total': 76}, {'date': '2023-09-06 03:36:42', 'positives': 48, 'sha256': '80e9df6cbe742866f0a88ea550f4b66498417506b8b8b7a88ffd180f67056670', 'total': 75}], 'undetected_samples': [{'date': '2023-08-26 06:57:57', 'positives': 0, 'sha256': 'cae8448c2011f091b22cf7756bc64bf377645b66076e52edb71a2360efcaa615', 'total': 0}, {'date': '2023-08-24 14:47:33', 'positives': 0, 'sha256': '8a895e7a52d62a7efc7ba64d8dd81603d2e6a47b603a9584bcdf789593deef77', 'total': 0}, {'date': '2023-08-23 11:46:25', 'positives': 0, 'sha256': 'b8e50901b6e2d51d8d0d639faf9b642f49568506aff8d448feb4032986bde964', 'total': 0}]}Thought: The IP address 77.246.107.91 has been analyzed and the results show that it has been involved in malicious activities. I need to provide a comprehensive report of the threat intelligence for this IP address.
+
+Action: IP_Intelligence
+Observables processed: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:00<00:00, 786.78obs/s]
+{'ip': '77.246.107.91', 'detected_samples': [{'date': '2023-09-27 07:25:59', 'positives': 38, 'sha256': '666271544af5f211b51e7dc0330cb3bba240c5ed7989f16eebd9c6bc2fdf04fe', 'total': 76}, {'date': '2023-09-06 03:36:42', 'positives': 48, 'sha256': '80e9df6cbe742866f0a88ea550f4b66498417506b8b8b7a88ffd180f67056670', 'total': 75}], 'undetected_samples': [{'date': '2023-08-26 06:57:57', 'positives': 0, 'sha256': 'cae8448c2011f091b22cf7756bc64bf377645b66076e52edb71a2360efcaa615', 'total': 0}, {'date': '2023-08-24 14:47:33', 'positives': 0, 'sha256': '8a895e7a52d62a7efc7ba64d8dd81603d2e6a47b603a9584bcdf789593deef77', 'total': 0}, {'date': '2023-08-23 11:46:25', 'positives': 0, 'sha256': 'b8e50901b6e2d51d8d0d639faf9b642f49568506aff8d448feb4032986bde964', 'total': 0}]}Thought: The IP address 77.246.107.91 has been analyzed and the results show that it has been involved in malicious activities. I need to provide a comprehensive report of the threat intelligence for this IP address.
+
+The IP address is detected in multiple samples with various detection rates. The most recent detection was on September 27, 2023, with 38 positives out of 76 total samples. Another detection on September 6, 2023, showed 48 positives out of 75 total samples.
+
+There are also undetected samples, indicating that while the IP address has been involved in malicious activities, not all samples were detected.
+
+To provide a comprehensive report, I will summarize the findings.
+
+Action: IP_Intelligence
+Observables processed: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:00<00:00, 721.79obs/s]
+{'ip': '77.246.107.91', 'detected_samples': [{'date': '2023-09-27 07:25:59', 'positives': 38, 'sha256': '666271544af5f211b51e7dc0330cb3bba240c5ed7989f16eebd9c6bc2fdf04fe', 'total': 76}, {'date': '2023-09-06 03:36:42', 'positives': 48, 'sha256': '80e9df6cbe742866f0a88ea550f4b66498417506b8b8b7a88ffd180f67056670', 'total': 75}], 'undetected_samples': [{'date': '2023-08-26 06:57:57', 'positives': 0, 'sha256': 'cae8448c2011f091b22cf7756bc64bf377645b66076e52edb71a2360efcaa615', 'total': 0}, {'date': '2023-08-24 14:47:33', 'positives': 0, 'sha256': '8a895e7a52d62a7efc7ba64d8dd81603d2e6a47b603a9584bcdf789593deef77', 'total': 0}, {'date': '2023-08-23 11:46:25', 'positives': 0, 'sha256': 'b8e50901b6e2d51d8d0d639faf9b642f49568506aff8d448feb4032986bde964', 'total': 0}]}Thought: The IP address 77.246.107.91 has been analyzed and the results show that it has been involved in malicious activities. I will now provide a comprehensive report of the threat intelligence for this IP address.
+
+The IP address 77.246.107.91 has been detected in multiple samples with various detection rates. The most recent detection was on September 27, 2023, with 38 positives out of 76 total samples. Another detection on September 6, 2023, showed 48 positives out of 75 total samples.
+
+There are also undetected samples, indicating that while the IP address has been involved in malicious activities, not all samples were detected.
+
+The IP address 77.246.107.91 is considered malicious based on the threat intelligence data.
+
+Final Answer: 
+Malicious IP Address: 77.246.107.91 
+Detection History: 
+- September 27, 2023: 38 positives out of 76 total samples 
+- September 6, 2023: 48 positives out of 75 total samples 
+Undetected Samples: 
+- August 26, 2023 
+- August 24, 2023 
+- August 23, 2023 
+
+---------------------------------------------------------------------
