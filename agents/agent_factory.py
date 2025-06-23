@@ -1,5 +1,5 @@
 from langchain import hub
-from langchain_google_genai import ChatGoogleGenerativeAI
+#from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.agents import Tool, AgentExecutor, create_react_agent
 from langchain_experimental.plan_and_execute import (
     PlanAndExecute,
@@ -14,6 +14,7 @@ from tools.threat_intelligence_tools import GeolocationTool
 from tools.threat_intelligence_tools import MalwareAnalysisTool
 from tools.threat_intelligence_tools import ThreatScoreAssessmentTool
 from tools.threat_intelligence_tools import Retrieve_IP_Info
+from tools.threat_intelligence_tools import DomainToIPTool
 from langchain_core.callbacks import StdOutCallbackHandler
 
 class ThreatIntelAgentFactory:
@@ -25,7 +26,7 @@ class ThreatIntelAgentFactory:
             #model = 'qwen3:32b',
             temperature=config.LLM_TEMPERATURE,
             callbacks=[handler],
-            base_url="http://192.168.123.110:11434"
+            base_url=config.LOCAL_LLM_URL
             )
         print("⚙️ Using LLM_MODEL:", config.LLM_MODEL)
 
@@ -35,6 +36,7 @@ class ThreatIntelAgentFactory:
         self.malware_tool = MalwareAnalysisTool(config)
         self.threat_Score_Assessment_tool = ThreatScoreAssessmentTool(config)
         self.retrieve_IP_Info_tool = Retrieve_IP_Info(config)
+        self.domain_To_IP_Tool = DomainToIPTool(config)
 
     def _create_tools(self):
         """Create LangChain tools"""
@@ -59,10 +61,15 @@ class ThreatIntelAgentFactory:
                 func=self.threat_Score_Assessment_tool.process,
                 description="Calculate a comprehensive threat score for an IP address based on multiple intelligence sources"
             ),
+            # Tool(
+            #     name="Retrieve_IP_Info",
+            #     func=self.retrieve_IP_Info_tool.process,
+            #     description="Retrieve threat intelligence information for an IP address from VirusTotal"
+            # ),
             Tool(
-                name="Retrieve_IP_Info",
-                func=self.retrieve_IP_Info_tool.process,
-                description="Retrieve threat intelligence information for an IP address from VirusTotal"
+                name="DomainToIPTool",
+                func=self.domain_To_IP_Tool.process,
+                description="Retrieve IP addresses Using Domain Name"
             ),
         ]
 
@@ -70,33 +77,24 @@ class ThreatIntelAgentFactory:
         """Create a React-style agent"""
         tools = self._create_tools()
         base_prompt = hub.pull("langchain-ai/react-agent-template")
-        #prompt = base_prompt.partial(instructions="Utilize tools to answer threat intelligence queries")
+
         prompt = base_prompt.partial(
             instructions=(
-                "You are a threat intelligence assistant. Use ONLY the following format to respond:\n\n"
-                "Thought: <your reasoning>\n"
-                "Action: <the name of the tool to use>\n"
-                "Action Input: <the input to that tool>\n\n"
-                "You must always return valid plain text — NOT JSON, NOT Python, NOT code blocks.\n"
-                "Do NOT use parentheses. Do NOT explain your answer. End with 'Final Answer: <your summary>' when no tool is needed.\n"
-                "Do NOT format responses as JSON or Markdown. This is NOT a chat; this is an API agent interface.\n\n"
-                "Valid Example:\n"
-                "Thought: I need to check the reputation of the IP.\n"
-                "Action: IP_Intelligence\n"
-                "Action Input: \"8.8.8.8\"\n\n"
-                "This is the ONLY correct response format. Any deviation will fail."
+                "You are a threat intelligence assistant. Your job is to select and use the available tools to answer security-related queries as efficiently as possible.\n\n"
+                "IMPORTANT:\n"
+                "- Do NOT return JSON, Markdown, or code blocks — respond only in plain text.\n"
+                "- Do NOT explain your reasoning outside the required format.\n"
+                "- Do NOT add extra commentary.\n"
+                "- Avoid parentheses and decorative formatting.\n\n"
+                "You must complete **all necessary steps** before providing the final answer.\n"
+                "- If the input is a domain, resolve it to an IP address first.\n"
+                "- Then perform a threat intelligence scan on that IP.\n"
+                #"- If there are samples or indicators, summarize them before finishing.\n"
+                "- Don't Summarize the 'Final Answer'\n"
+                "- Only write 'Final Answer:' when the full analysis is complete.\n"
+                "If you write 'Final Answer:', do not continue with any more Thought, Action, or Observations.\n"
             )
         )
-        # prompt = base_prompt.partial(
-        #     instructions=(
-        #         "You are a threat intelligence assistant. Your job is to select and use the available tools to answer security-related queries as efficiently as possible.\n\n"
-        #         "IMPORTANT:\n"
-        #         "- Do NOT return JSON, Markdown, or code blocks — respond only in plain text.\n"
-        #         "- Do NOT explain your reasoning outside the required format.\n"
-        #         "- Do NOT add extra commentary.\n"
-        #         "- Avoid parentheses and decorative formatting.\n\n"
-        #     )
-        # )
         react_agent = create_react_agent(self.llm, tools, prompt)
         return AgentExecutor(agent=react_agent, tools=tools,max_iterations=15, early_stopping_method="force", verbose=True,handle_parsing_errors=True)
 
@@ -104,6 +102,6 @@ class ThreatIntelAgentFactory:
         """Create a Plan-and-Execute agent"""
         tools = self._create_tools()
         planner = load_chat_planner(self.llm)
-        executor = load_agent_executor(self.llm, tools ,max_iterations=15, early_stopping_method="force", verbose=True)
+        executor = load_agent_executor(self.llm, tools , verbose=True)
 
         return PlanAndExecute(planner=planner, executor=executor)
