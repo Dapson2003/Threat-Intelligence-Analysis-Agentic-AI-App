@@ -26,7 +26,7 @@ class ThreatIntelAgentFactory:
             #model = 'qwen3:32b',
             temperature=config.LLM_TEMPERATURE,
             callbacks=[handler],
-            base_url="http://192.168.123.110:11434"
+            base_url=config.LOCAL_LLM_URL
             )
         print("⚙️ Using LLM_MODEL:", config.LLM_MODEL)
 

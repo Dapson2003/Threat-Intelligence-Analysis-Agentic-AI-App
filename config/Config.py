@@ -14,6 +14,7 @@ class Config:
         # LLM Configuration
         self.LLM_MODEL = os.getenv('LLM_MODEL', 'gemini-2.0-flash-lite')
         self.LLM_TEMPERATURE = float(os.getenv('LLM_TEMPERATURE', 0.05))
+        self.LOCAL_LLM_URL = os.getenv('LOCAL_LLM_URL')
         self._validate_config()
         #print(self.LLM_MODEL)
 
