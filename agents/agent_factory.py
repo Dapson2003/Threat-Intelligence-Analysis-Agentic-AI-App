@@ -23,7 +23,6 @@ class ThreatIntelAgentFactory:
         handler = StdOutCallbackHandler()
         self.llm = OllamaLLM(
             model=config.LLM_MODEL,
-            #model = 'qwen3:32b',
             temperature=config.LLM_TEMPERATURE,
             callbacks=[handler],
             base_url=config.LOCAL_LLM_URL
