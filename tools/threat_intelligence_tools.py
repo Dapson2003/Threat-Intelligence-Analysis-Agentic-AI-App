@@ -8,7 +8,6 @@ from msticpy.sectools.vtlookupv3.vtlookupv3 import VTLookupV3
 from config import Config
 from tools.BaseThreatIntelligenceTool import BaseThreatIntelligenceTool
 import os
-import pandas as pd
 
 class IPIntelligenceTool(BaseThreatIntelligenceTool):
     def __init__(self, config: Optional[Config] = None):

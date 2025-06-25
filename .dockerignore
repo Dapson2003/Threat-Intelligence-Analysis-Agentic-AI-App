@@ -1,0 +1,6 @@
+LocalLLM/
+*.pyc
+__pycache__/
+.env
+venvs/
+*.git
