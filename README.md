@@ -2,6 +2,9 @@
 
 # Threat Intelligence Analysis
 
+How to run : $ docker run -d -p 9002:9002 --name fastapi-container --env-file .env fastapi-v1
+
+
 1] The **Threat Intelligence Analysis** project is a comprehensive tool for gathering, analyzing, and assessing the threat level of IP addresses and malware samples. It combines geographical, reputation, and threat data to provide actionable insights into cyber risks. The application leverages various tools and APIs to provide geolocation information, threat scores, and malware analysis summaries.
 
  2] Engineered a modular Threat Intelligence Analysis platform using Python and Streamlit, integrating VirusTotal
