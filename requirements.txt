@@ -21,4 +21,3 @@ requests
 openai
 typing-extensions
 langchain_ollama
-pandas
