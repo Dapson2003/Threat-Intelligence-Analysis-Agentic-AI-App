@@ -14,10 +14,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . /app
 
 # Expose the port that Streamlit will use
-EXPOSE 9000
+EXPOSE 9002
 
 # Set environment variable to ensure Python output is unbuffered
 ENV PYTHONUNBUFFERED=1
 
-# Run Streamlit on port 9000
-CMD ["streamlit", "run", "app.py", "--server.port", "9000"]
+# Run app on port 9002
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "9002"]
