@@ -22,7 +22,7 @@ class ThreatIntelStreamlitApp:
 
         self.agent_type = st.sidebar.radio(
             "Select Agent Type",
-            ["React Agent", "Plan and Execute Agent"],
+            ["React Agent", "React Agent😎(Same but Cooler)"],
             index=0
         )
 
@@ -41,8 +41,10 @@ class ThreatIntelStreamlitApp:
                 agent = self.agent_factory.create_react_agent()
                 result = agent.invoke({"input": query})
             else:
-                agent = self.agent_factory.create_plan_execute_agent()
-                result = agent.invoke(query)
+                agent = self.agent_factory.create_react_agent()
+                result = agent.invoke({"input": query})
+                # agent = self.agent_factory.create_plan_execute_agent()
+                # result = agent.invoke(query)
 
             return result
         except Exception as e:

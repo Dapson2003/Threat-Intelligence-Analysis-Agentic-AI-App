@@ -17,7 +17,7 @@ langchain-openai
 streamlit
 python-dotenv
 msticpy
-langchain
 requests
 openai
 typing-extensions
+langchain_ollama
