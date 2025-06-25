@@ -22,7 +22,7 @@ async def process_query(query_input: QueryInput):
         agent = agent_factory.create_react_agent()
         
         # Invoke the agent with the provided query
-        result = agent.invoke({"input": query_input.query})
+        result = await agent.ainvoke({"input": query_input.query})
         
         # Return the result
         return {"status": "success", "result": result}
