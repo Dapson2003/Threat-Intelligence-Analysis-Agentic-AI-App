@@ -1,3 +1,6 @@
 LocalLLM/JsonF.json
 log.txt
 .env
+# Ignore Python bytecode files
+*.pyc
+__pycache__/
