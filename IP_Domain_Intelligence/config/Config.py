@@ -23,6 +23,7 @@ class Config:
         os.environ["LANGCHAIN_ENDPOINT"] = os.getenv("LANGCHAIN_ENDPOINT")
         os.environ["LANGCHAIN_API_KEY"] = os.getenv('LANGSMITH_API_KEY')
         os.environ["LANGCHAIN_PROJECT"] = os.getenv("LANGCHAIN_PROJECT")
+        
 
     def _validate_config(self):
         errors = []
