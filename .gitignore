@@ -1,0 +1,10 @@
+# Ignore Python bytecode files
+*.pyc
+__pycache__/
+
+#Ignore All in project
+.env
+log.txt
+
+#Ignore In IP_Domain_Intelligence
+IP_Domain_Intelligence/LocalLLM/**/*.json

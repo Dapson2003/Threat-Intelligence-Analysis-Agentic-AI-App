@@ -1,7 +1,0 @@
-LocalLLM/JsonF.json
-log.txt
-.env
-# Ignore Python bytecode files
-*.pyc
-__pycache__/
-LocalLLM/Virus.json
