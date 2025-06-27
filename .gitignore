@@ -4,3 +4,4 @@ log.txt
 # Ignore Python bytecode files
 *.pyc
 __pycache__/
+LocalLLM/Virus.json
