@@ -22,7 +22,7 @@ class IPIntelligenceTool(BaseThreatIntelligenceTool):
         self.vt_key = config.VIRUSTOTAL_KEY if config else None
 
     def process(self, ip_address: str) -> Dict[str, Any]:
-        open("./IP_Domain_intelligence/log.txt", "a").write("Process IP Was Called\n")
+        #open("log.txt", "a").write("Process IP Was Called\n")
         try:
             # Virus Total IP Lookup
             result = self.ti_lookup.lookup_ioc(
@@ -32,23 +32,23 @@ class IPIntelligenceTool(BaseThreatIntelligenceTool):
             )
             details = result.at[0, 'RawResult']
             samples = details
-            open("./IP_Domain_intelligence/log.txt", "a").write("Process IP Look UP correctly\n")
+            #open("log.txt", "a").write("Process IP Look UP correctly\n")
             tempsize = 15#(Size of return value) The look up will only return only this much
             #Try to use summirizer
             try:
                 comm_samples = details.get("detected_communicating_samples", [])
                 if len(comm_samples) >= tempsize:
                     samples = self._summarize_samples(details,tempsize)
-                    open("./IP_Domain_intelligence/log.txt", "a").write("Summarizer_Was_Called\n")
-                    #open("./IP_Domain_intelligence/log.txt", "a").write(f"Summarized : {samples}\n")
+                    #open("log.txt", "a").write("Summarizer_Was_Called\n")
+                    #open("log.txt", "a").write(f"Summarized : {samples}\n")
                     return str({
                         "ip": ip_address,
                         "detected_samples": samples,
                         "undetected_samples": []
                     })
             except Exception as e:
-                open("./IP_Domain_intelligence/log.txt", "a").write("Summarizer_Failed\n")
-                open("./IP_Domain_intelligence/log.txt", "a").write(f"ERROR: {e}\n")
+                #open("log.txt", "a").write("Summarizer_Failed\n")
+                #open("log.txt", "a").write(f"ERROR: {e}\n")
                 pass
             
         except Exception as e:
@@ -68,16 +68,16 @@ class IPIntelligenceTool(BaseThreatIntelligenceTool):
         import ast
 
         try:
-            open("./IP_Domain_intelligence/log.txt", "a").write(f"Raw input type: {type(samples)}\n")
+            #open("log.txt", "a").write(f"Raw input type: {type(samples)}\n")
 
             # Parse if it's a string
             if isinstance(samples, str):
                 samples = ast.literal_eval(samples)
-                open("./IP_Domain_intelligence/log.txt", "a").write("Parsed string to dict\n")
+                #open("log.txt", "a").write("Parsed string to dict\n")
 
             # Extract sample list
             sample_list = samples.get('detected_communicating_samples', [])
-            open("./IP_Domain_intelligence/log.txt", "a").write(f"Found {len(sample_list)} samples\n")
+            #open("log.txt", "a").write(f"Found {len(sample_list)} samples\n")
 
             # Clean and sort
             clean_samples = [s for s in sample_list if isinstance(s, dict)]
@@ -91,11 +91,11 @@ class IPIntelligenceTool(BaseThreatIntelligenceTool):
             top_samples = sorted_samples[:size]
 
             # Keep all fields
-            open("./IP_Domain_intelligence/log.txt", "a").write(f"Summarized count: {len(top_samples)}\n")
+            #open("log.txt", "a").write(f"Summarized count: {len(top_samples)}\n")
             return str(top_samples)
 
         except Exception as e:
-            open("./IP_Domain_intelligence/log.txt", "a").write(f"Summarizer_Failed\nERROR: {e}\n")
+            #open("log.txt", "a").write(f"Summarizer_Failed\nERROR: {e}\n")
             return "[]"
 
 
@@ -128,19 +128,19 @@ class GeolocationTool(BaseThreatIntelligenceTool):
 class DomainToIPTool(BaseThreatIntelligenceTool):
     def __init__(self, config: Optional[Config] = None):
         super().__init__(config)
-        open("./IP_Domain_intelligence/log.txt", "a").write(f"DomainToIPTool: Called\n")
+        #open("log.txt", "a").write(f"DomainToIPTool: Called\n")
     def process(self, domain: str) -> Dict[str, Any]:
         """Resolves a domain name to its IP address."""
-        open("./IP_Domain_intelligence/log.txt", "a").write(f"DomainToIPTool: resolving {domain}\n")
+        #open("log.txt", "a").write(f"DomainToIPTool: resolving {domain}\n")
         try:
             ip_address = socket.gethostbyname(domain)
-            open("./IP_Domain_intelligence/log.txt", "a").write(f"Resolved {domain} -> {ip_address}\n")
+            #open("log.txt", "a").write(f"Resolved {domain} -> {ip_address}\n")
             return {
                 "domain": domain,
                 "ip": ip_address
             }
         except socket.gaierror as e:
-            open("./IP_Domain_intelligence/log.txt", "a").write(f"Failed to resolve {domain}: {e}\n")
+            #open("log.txt", "a").write(f"Failed to resolve {domain}: {e}\n")
             return {
                 "error": f"Failed to resolve domain: {domain}",
                 "details": str(e)
