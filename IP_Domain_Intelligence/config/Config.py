@@ -9,7 +9,7 @@ class Config:
         self.IPINFO_API_KEY = os.getenv('IPINFO_API_KEY')
         
         # Google API Key for LLM (Google Generative AI)
-        self.GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
+        #self.GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
 
         # LLM Configuration
         self.LLM_MODEL = os.getenv('LLM_MODEL', 'gemini-2.0-flash-lite')
@@ -23,6 +23,11 @@ class Config:
         os.environ["LANGCHAIN_ENDPOINT"] = os.getenv("LANGCHAIN_ENDPOINT")
         os.environ["LANGCHAIN_API_KEY"] = os.getenv('LANGSMITH_API_KEY')
         os.environ["LANGCHAIN_PROJECT"] = os.getenv("LANGCHAIN_PROJECT")
+        
+        #CheckmsticpyPath
+        config_path = os.getenv("MSTICPYCONFIG")
+        #open("log.txt", "a").write(f"Using MSTICPYCONFIG: {config_path}\n")
+        #open("log.txt", "a").write(f"Absolute path: {os.path.abspath(config_path)}\n")
 
     def _validate_config(self):
         errors = []
@@ -33,11 +38,12 @@ class Config:
         if not self.IPINFO_API_KEY:
             errors.append("IPInfo API key is missing")
 
-        if not self.GOOGLE_API_KEY:
-            errors.append("Google API key is missing")
+        # if not self.GOOGLE_API_KEY:
+        #     errors.append("Google API key is missing")
 
         if errors:
             raise ValueError("\n".join(errors))
+
 
     def get_provider_settings(self):
         return {

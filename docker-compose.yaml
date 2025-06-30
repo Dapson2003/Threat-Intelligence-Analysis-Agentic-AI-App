@@ -1,0 +1,15 @@
+version: "3.9"
+
+services:
+  ip_domain_intel:
+    build:
+      context: ./IP_Domain_Intelligence
+      dockerfile: dockerfile
+    container_name: ip_domain_intel
+    ports:
+      - "9002:9002"
+    env_file:
+      - ./IP_Domain_Intelligence/.env  # ✅ pulls from same dir
+    working_dir: /IP_Domain_Intelligence
+    volumes:
+      - ./IP_Domain_Intelligence:/IP_Domain_Intelligence
