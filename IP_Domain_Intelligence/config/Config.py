@@ -26,8 +26,8 @@ class Config:
         
         #CheckmsticpyPath
         config_path = os.getenv("MSTICPYCONFIG")
-        open("log.txt", "a").write(f"Using MSTICPYCONFIG: {config_path}\n")
-        open("log.txt", "a").write(f"Absolute path: {os.path.abspath(config_path)}\n")
+        #open("log.txt", "a").write(f"Using MSTICPYCONFIG: {config_path}\n")
+        #open("log.txt", "a").write(f"Absolute path: {os.path.abspath(config_path)}\n")
 
     def _validate_config(self):
         errors = []
