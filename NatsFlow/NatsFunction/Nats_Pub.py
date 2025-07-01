@@ -32,4 +32,5 @@ async def publish_message():
 
 # This allows standalone use
 if __name__ == "__main__":
+    print("NatsPub called")
     asyncio.run(publish_message())
