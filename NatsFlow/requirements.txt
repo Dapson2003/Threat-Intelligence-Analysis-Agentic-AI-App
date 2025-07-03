@@ -1,3 +1,4 @@
-asyncio
-nats
-json
+nats-py
+python-dotenv
+fastapi
+uvicorn

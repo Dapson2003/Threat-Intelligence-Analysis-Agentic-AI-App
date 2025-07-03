@@ -13,3 +13,16 @@ services:
     working_dir: /IP_Domain_Intelligence
     volumes:
       - ./IP_Domain_Intelligence:/IP_Domain_Intelligence
+
+  natsflow:
+    build:
+      context: ./NatsFlow
+      dockerfile: dockerfile
+    container_name: NatsFlow
+    ports:
+      - "9003:9003"
+    env_file:
+      - ./NatsFlow/.env  # ✅ pulls from same dir
+    working_dir: /NatsFlow
+    volumes:
+      - ./NatsFlow:/NatsFlow

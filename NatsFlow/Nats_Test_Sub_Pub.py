@@ -1,12 +1,12 @@
 import asyncio
-from contextlib import asynccontextmanager
+#from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from NatsFunction.Nats_Sub import start_nats_subscriber, stop_nats_subscriber
 from NatsFunction.Nats_Pub import publish_message
 
 nats_task = None  # Declare global to keep reference
 
-@asynccontextmanager
+#@asynccontextmanager
 async def lifespan(app: FastAPI):
     global nats_task
     loop = asyncio.get_event_loop()
