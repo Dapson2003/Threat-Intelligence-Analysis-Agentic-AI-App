@@ -6,7 +6,7 @@ def convert_input_format(wrapped_input: dict) -> dict:
         wrapped_input (dict): JSON object with 'node' key.
 
     Returns:
-        dict: Flattened input for prediction.
+        dict: Flattened input for prediction, aligned with model DataFrame format.
     """
     try:
         node = wrapped_input.get("node", {})
@@ -30,17 +30,17 @@ def convert_input_format(wrapped_input: dict) -> dict:
         )
 
         return {
-            'severity': node.get("severity"),
-            'alert_status': node.get("alert_status"),
-            'log_source': node.get("log_source"),
-            'tags': node.get("tags"),
-            'objectMarking': object_marking_def,
-            'alert_name': node.get("alert_name"),
-            'sla_mttv': sla_mttv,
-            'hostname': hostname,
-            'endpoint_type': endpoint_type,
-            'os': os_type,
-            'src_ip': src_ip
+            'severity': [node.get("severity")],
+            'alert_status': [node.get("alert_status")],
+            'log_source': [node.get("log_source")],
+            'tags': [node.get("tags")],
+            'objectMarking': [object_marking_def],
+            'alert_name': [node.get("alert_name")],
+            'sla_mttv': [sla_mttv],
+            'hostname': [hostname],
+            'endpoint_type': [endpoint_type],
+            'os': [os_type],
+            'src_ip': [src_ip]
         }
 
     except Exception as e:
