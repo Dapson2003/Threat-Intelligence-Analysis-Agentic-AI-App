@@ -9,7 +9,7 @@ services:
     ports:
       - "9002:9002"
     env_file:
-      - ./IP_Domain_Intelligence/.env  # ✅ pulls from same dir
+      - ./IP_Domain_Intelligence/.env  
     working_dir: /IP_Domain_Intelligence
     volumes:
       - ./IP_Domain_Intelligence:/IP_Domain_Intelligence
@@ -22,7 +22,20 @@ services:
     ports:
       - "9003:9003"
     env_file:
-      - ./NatsFlow/.env  # ✅ pulls from same dir
+      - ./NatsFlow/.env  
     working_dir: /NatsFlow
     volumes:
       - ./NatsFlow:/NatsFlow
+
+  runmodel:
+    build:
+      context: ./RunModel
+      dockerfile: dockerfile
+    container_name: runmodel
+    ports:
+      - "9004:9004"
+    env_file:
+      - ./RunModel/.env
+    working_dir: /RunModel
+    volumes:
+      - ./RunModel:/RunModel

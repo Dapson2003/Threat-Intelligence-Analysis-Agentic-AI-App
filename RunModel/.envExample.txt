@@ -1,0 +1,2 @@
+NAT_SERVER_URL=nats://IP:port
+#Where Ip is xxx.xxx.xxx.xxx and port is xxxxx
