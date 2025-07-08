@@ -11,3 +11,4 @@ IP_Domain_Intelligence/LocalLLM/**/*.json
 
 #Ignore In RunModel
 RunModel/model/**/*.pkl
+*.zip
