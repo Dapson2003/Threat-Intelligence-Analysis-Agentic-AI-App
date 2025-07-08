@@ -1,6 +1,7 @@
 import os
 import joblib
 import pandas as pd
+from model.convert_input_format import convert_input_format
 
 # Load the trained pipeline only once (on import)
 model_path = os.getenv("MODEL_PATH", "./model/model80.pkl")
@@ -52,3 +53,8 @@ def predict_top7_labels(input_df: pd.DataFrame) -> dict:
     }
 
     return top7_results
+
+def clean_run_prediction(data: dict) -> dict:
+    cleaned = convert_input_format(data)
+    result = predict_top7_labels(cleaned)
+    return result
