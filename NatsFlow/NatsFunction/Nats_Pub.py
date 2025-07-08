@@ -18,19 +18,22 @@ async def publish_message(subject: str, message: dict):
     
     print(f"Published message to subject '{subject}'")
     await nc.drain()
+    
+async def publish_Js_message(subject: str, message: dict):
+    nc = NATS()
+    await nc.connect(cfg.NAT_SERVER_URL)
+    
+    try:
+        #JetStream support
+        js = nc.jetstream()
+        await js.publish(subject, json.dumps(message).encode())
+        
+        print(f"Published message to subject '{subject}'")
+        await nc.drain()
+        
+    except Exception as e:
+        print(f"Error publishing message to subject '{subject}': {e}")
+        await nc.drain()
+        raise e
 
-# Standalone for CLI testing
-if __name__ == "__main__":
-    import sys
-    subject = sys.argv[1] if len(sys.argv) > 1 else "alert.default"
-    message = {
-        "alert": {"id": "cli-call"},
-        "triage": {
-            "triage_level": "Low",
-            "score": 1,
-            "mitre_ids": [],
-            "src_ip": [],
-            "severity": "info"
-        }
-    }
-    asyncio.run(publish_message(subject, message))
+

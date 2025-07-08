@@ -16,10 +16,10 @@ async def message_handler(msg):
     log_message = f"Received from '{str(msg.subject)}': {str(data_str)}\n"
 
     # Write to log.txt in main directory
+    print(f"{log_message}")
     log_path = os.path.join(os.path.dirname(__file__), "..", "log.txt")
     with open(log_path, "a", encoding="utf-8") as f:
         f.write(log_message)
-        
         
 async def start_nats_subscriber(subject: str):
     global subscribed_subject
@@ -28,6 +28,16 @@ async def start_nats_subscriber(subject: str):
     await nc.subscribe(subject, cb=message_handler)
     subscribed_subject = subject
     print(f"Subscribed to '{subject}'")
+    
+async def start_nats_subscriber_with_js(subject: str,durable_name: str = "default_durable"):
+    global subscribed_subject
+    if not nc.is_connected:
+        await nc.connect(cfg.NAT_SERVER_URL)
+    
+    js = nc.jetstream()
+    await js.subscribe(subject, cb=message_handler,durable=durable_name)
+    subscribed_subject = subject
+    print(f"Subscribed to JetStream subject: '{subject}', durable: '{durable_name}'")
 
 async def stop_nats_subscriber():
     if nc.is_connected:
