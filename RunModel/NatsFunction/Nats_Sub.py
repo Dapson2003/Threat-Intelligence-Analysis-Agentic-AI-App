@@ -20,6 +20,16 @@ async def message_handler(msg):
         f.write(log_message)
     data_dict = json.loads(data_str)
     print(f"log received data: {data_dict}")
+    try:    
+        #Run The Model and Publish the result
+        result = clean_run_prediction(data_dict)
+        Pub_Out = await publish_js_message("agent-type.Output", result)
+        print(f"Data Sucessfully Pub : {Pub_Out}")
+        
+    except Exception as e:
+        data_str = f"<decode-error: {e}>"
+        with open("log.txt", "a", encoding="utf-8") as f:
+            f.write(data_str)
         
 async def start_nats_subscriber(subject: str):
     global subscribed_subject
