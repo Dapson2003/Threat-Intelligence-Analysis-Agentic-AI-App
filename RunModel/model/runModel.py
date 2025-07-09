@@ -2,6 +2,7 @@ import os
 import joblib
 import pandas as pd
 from model.convert_input_format import convert_input_format
+from model.MatchMitre import optimized_match
 
 # Load the trained pipeline only once (on import)
 model_path = os.getenv("MODEL_PATH", "./model/model80.pkl")
@@ -56,5 +57,12 @@ def predict_top7_labels(input_df: pd.DataFrame) -> dict:
 
 def clean_run_prediction(data: dict) -> dict:
     cleaned = convert_input_format(data)
-    result = predict_top7_labels(cleaned)
-    return result
+    prediction = predict_top7_labels(cleaned)
+
+    result_dict = {
+        "prediction": prediction
+    }
+
+    # No need to re-parse JSON
+    matched = optimized_match("./model/MitreMatch.csv", result_dict)
+    return matched
