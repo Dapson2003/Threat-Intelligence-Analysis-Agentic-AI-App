@@ -1,8 +1,7 @@
 import os
 from nats.aio.client import Client as NATS
-from config.Config import Config
+from config.Config import cfg
 
-cfg = Config()
 nc = NATS()
 subscribed_subject = None
 

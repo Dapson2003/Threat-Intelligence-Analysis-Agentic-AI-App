@@ -1,5 +1,7 @@
 from NatsFunction.Nats_JS_Create import create_js_stream as create_stream
 from NatsFunction.Nats_Sub import start_nats_subscriber_with_js
+from config.Config import cfg
+
 
 async def OpenModelServer() :
     """

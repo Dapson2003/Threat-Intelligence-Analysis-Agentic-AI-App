@@ -1,9 +1,7 @@
 import asyncio
 import json
 from nats.aio.client import Client as NATS
-from config.Config import Config
-
-cfg = Config()
+from config.Config import cfg
 
 async def publish_message(subject: str, message: dict):
     nc = NATS()

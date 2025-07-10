@@ -1,12 +1,11 @@
 import os
 import json
 from nats.aio.client import Client as NATS
-from config.Config import Config
+from config.Config import cfg
 from apis.PredictOne import predict as predict_top7_labels
 from NatsFunction.Nats_Pub import publish_Js_message as publish_js_message
 from model.runModel import clean_run_prediction
 
-cfg = Config()
 nc = NATS()
 subscribed_subject = None
 
@@ -23,7 +22,7 @@ async def message_handler(msg):
     try:    
         #Run The Model and Publish the result
         result = clean_run_prediction(data_dict)
-        Pub_Out = await publish_js_message("agent-type.Output", result)
+        Pub_Out = await publish_js_message(cfg.OUTPUT_SUBJECT, result)
         print(f"Data Sucessfully Pub : {Pub_Out}")
         
     except Exception as e:

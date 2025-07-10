@@ -1,9 +1,8 @@
 import asyncio
 from nats.aio.client import Client as NATS
-from config.Config import Config
+from config.Config import cfg
 from nats.js.api import StreamConfig
 
-cfg = Config()
 async def create_js_stream(input_stream: str, input_filter: dict):
 
     nc = NATS()
