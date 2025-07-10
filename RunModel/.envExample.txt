@@ -17,3 +17,23 @@ NAT_SERVER_URL=nats://test-nats-server-JS:4222
 # $ docker network create nats-net
 # $ docker network connect nats-net test-nats-server-JS
 # $ docker network connect nats-net runmodel (your container name)
+
+# Auto open connection to NATS server
+# Set to true if you want to automatically open the connection to the NATS server when the application starts.
+AUTO_OPEN_CONNECTION="false"
+
+#Nats JS stream creation and Prefix
+# This is the name of the stream that will be created in NATS JetStream.
+STREAM_NAME="model_stream"
+
+# This is the prefix for the stream name that will be used in NATS JetStream.
+# All of the Input and Output streams will be prefixed with this value.
+# For example, if the prefix is "agent-type", the Input stream will be "agent-type.Input" and the Output stream will be "agent-type.Output".
+STREAM_PREFIX="agent-type"
+
+# Durable name for the model server subscriber
+DURABLE_NAME="model_server_durable"
+
+# Nats Connection (Pipeline) input and output to model
+INPUT_SUBJECT_SUFFIX=".Input"
+OUTPUT_SUBJECT_SUFFIX=".Output"
