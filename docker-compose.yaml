@@ -1,17 +1,4 @@
 services:
-  ip_domain_intel:
-    build:
-      context: ./IP_Domain_Intelligence
-      dockerfile: dockerfile
-    container_name: ip_domain_intel
-    ports:
-      - "9002:9002"
-    env_file:
-      - ./IP_Domain_Intelligence/.env  
-    working_dir: /IP_Domain_Intelligence
-    volumes:
-      - ./IP_Domain_Intelligence:/IP_Domain_Intelligence
-
   natsflow:
     build:
       context: ./NatsFlow
@@ -38,13 +25,13 @@ services:
     volumes:
       - ./RunModel:/RunModel
 
-NatsServer:
-  image: nats:latest
-  container_name: NatsServer
-  ports:
-    - "4222:4222"
-    - "6222:6222"
-    - "8222:8222"
-  volumes:
-    - ./NatsServer:/data
-  command: ["-js", "--max_payload=10485760"]
+  nats_server:
+    image: nats:latest
+    container_name: self_host_nats_server
+    ports:
+      - "4222:4222"
+      - "6222:6222"
+      - "8222:8222"
+    volumes:
+      - ./NatsServer:/data
+    command: ["-js", "--max_payload=10485760"]
