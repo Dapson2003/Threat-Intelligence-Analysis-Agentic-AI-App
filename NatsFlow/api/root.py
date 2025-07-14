@@ -9,12 +9,21 @@ async def root():
     html_content = """
     <html>
         <head>
-            <title>Agent API</title>
+            <title>Nats API</title>
         </head>
         <body>
             <h1>Welcome to the Agent API</h1>
-            <p>This is the main entry point for interacting with the agent via API.</p>
-            <p>To start using the agent, make a POST request to <a href="/api/publish">/api/publish</a> or <a href="/docs">check the docs</a>.</p>
+            <p>ReadMe:</p>
+            <p>This is the main entry point for interacting with the agent via Nats Using API.</p>
+            <ul>
+                <li>To try to test the Model via Nats services.</li>
+                <li>Publish the log to the model via Publish-JS</li>
+                <li>For default channel use agent-type.Input for publish</li>
+                <li>For checking the reply Subscribe-JS to agent-type.Output</li>
+                <li>The Output can be seen in the log files in the docker folder of the NatsFlow</li>
+                <li>Ensure the NATS server has JetStream enabled for this functionality.</li>
+                <li>Configuration of server location can be adjusted in the .env file.</li>
+            <p>To visit the <a href="/docs">Swagger UI</a>.</p>
         </body>
     </html>
     """
