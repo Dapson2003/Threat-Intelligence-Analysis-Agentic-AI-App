@@ -5,7 +5,6 @@ __pycache__/
 #Ignore All in project
 .env
 log.txt
-NatsFlow/
 Multi_Tools_copy/
 Multi_Tools/
 IP_Domain_Intelligence/

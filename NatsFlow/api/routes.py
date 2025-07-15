@@ -22,9 +22,13 @@ async def publish(req: PublishRequest):
     return await nats_handler.publish_message(req)
 
 @router.post("/publish-js")
-async def publish(req: PublishRequest):
+async def publish_Js(req: PublishRequest):
     return await nats_handler.publish_Js_message(req)
 
 @router.post("/create-stream")
 async def create_stream(req: CreateStreamRequest):
     return await nats_handler.create_jetstream_stream(req)  
+
+@router.post("/get-latest-messages/")
+async def get_lastest_Js_messages(req: JsSubscribeRequest,count: int = 3):
+    return await nats_handler.get_last_js_messages(req, count)
