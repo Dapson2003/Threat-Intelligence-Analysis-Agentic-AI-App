@@ -25,18 +25,18 @@ services:
     volumes:
       - ./RunModel:/RunModel
 
-  debug_agent:
-    build:
-      context: ./DebugAgent
-      dockerfile: dockerfile
-    container_name: DebugAgent
-    ports:
-      - "9002:9002"
-    env_file:
-      - ./DebugAgent/.env  
-    working_dir: /DebugAgent
-    volumes:
-      - ./DebugAgent:/DebugAgent
+  # debug_agent:
+  #   build:
+  #     context: ./DebugAgent
+  #     dockerfile: dockerfile
+  #   container_name: DebugAgent
+  #   ports:
+  #     - "9002:9002"
+  #   env_file:
+  #     - ./DebugAgent/.env  
+  #   working_dir: /DebugAgent
+  #   volumes:
+  #     - ./DebugAgent:/DebugAgent
 
   # nats_server:
   #   image: nats:latest
