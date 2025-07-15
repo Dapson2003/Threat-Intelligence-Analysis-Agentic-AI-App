@@ -1,4 +1,3 @@
-#Example_Log_Keeper.py
 example_log_body = {
           "node": {
             "id": "ea9632d7-8202-4b1d-92f1-d2ea18b542cf",
@@ -456,6 +455,7 @@ example_log_body = {
           }
         }
 
+
 example_prediction_body = {
   "prediction": {
     "tactic": [
@@ -482,6 +482,8 @@ example_prediction_body = {
     ]
   }
 }
+
+
 example_type_body = {
   "prediction": {
     "tactic": [

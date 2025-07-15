@@ -2,7 +2,12 @@ from langchain.chains import LLMChain
 from langchain_core.prompts import PromptTemplate
 from langchain_ollama import OllamaLLM
 from langchain_core.callbacks import StdOutCallbackHandler
+from langchain.agents import initialize_agent, AgentType
+from langchain.tools import Tool
 from config.Config import cfg
+from DataBaseFolder.getFromDB import query_onboarding_database
+from apis.Example_Log_Keeper import example_log_body as example_log
+from apis.Example_Log_Keeper import example_type_body as example_type
 
 
 class AgentFactory:
@@ -41,3 +46,36 @@ class AgentFactory:
             )
 
             return chain
+        
+    def create_ask_tools_agent(self):
+        """
+        Creates an agent that reads a security log and a MITRE ATT&CK type,
+        then reasons over it to decide which onboarding data to query using available tools.
+        """
+        def load_prompt_template():
+            with open("agents/Ask_Tools_Template.txt", "r") as f:
+                return f.read()
+
+        prompt_template = load_prompt_template()
+
+        query_tool = Tool(
+            name="query_onboarding_database",
+            func=query_onboarding_database,
+            description=(
+                "Use this tool to construct a SQL query for onboarding asset information such as devices, technologies, or systems. "
+                "It takes optional filters such as asset location, technology type, or hostname."
+            )
+        )
+
+        agent = initialize_agent(
+            tools=[query_tool],
+            agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+            llm=self.llm,
+            verbose=True
+        )
+
+        def run(log: str, mitre_attack_type: str) -> str:
+            prompt = prompt_template.format(log=example_log, mitre_attack_type=example_type)
+            return agent.run(prompt)
+
+        return run

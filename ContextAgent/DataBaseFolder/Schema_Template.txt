@@ -1,0 +1,217 @@
+
+enum OnLocation { 
+  ON_PREMISES
+  ON_CLOUD
+}
+enum Technology {
+  ANTIVIRUS
+  EDR
+  NDR
+  NEXTGENERATIONFIREWALL
+  NIDS_NIPS
+  HOSTBASEDDLP
+  SIEM_ELK
+  NETWORKBASEDDLP
+  NAC
+  IAM
+  TWOFACTORAUTHENTICATION
+  EMAILGATEWAY
+  WEBGATEWAY
+  SOAR
+  USBCONTROL
+  WAF
+  FULLDISKENCRYPTION
+  THREATINTELLIGENCEPLATFORM
+  APPLICATIONWHITELISTING
+  SANDBOX
+  DAM
+  FIM
+  OSPATCHING
+  THIRDPARTYAPPPATCHING
+  VULNERABILITYASSESSMENT
+  ANTIDDOS
+  ASSETMANAGEMENT
+  GRC
+  ICS_SCADA_NIDS
+  PAM
+  OTHERS
+}
+type Technological {
+  id: ID
+  technology: Technology!
+  product: String
+}
+type CustomerNetworkInfo { 
+  id: ID!
+  ip: String!
+  description: String!
+}
+type CustomerDevice {
+  id: ID!                       
+  deviceType: String
+  vendor: String
+  os: String
+  amount: Int
+}
+type MonitorAssetInfo {
+  id: ID!
+  purpose: String!
+  productName: String!
+  os: String
+  version: String
+  ipAddress: String
+  hostname: String
+  assetLocation: OnLocation!
+  isVm: Boolean!
+  inProduction: Boolean!
+  hasApi: Boolean!
+}
+type OnBoarding implements BasicObject & StixObject & StixCoreObject & StixDomainObject {
+  id: ID! # internal_id
+  standard_id: String!
+  entity_type: String!
+  parent_types: [String]!
+  # StixObject
+  representative: Representative!
+  x_opencti_stix_ids: [StixId]
+  is_inferred: Boolean!
+  spec_version: String!
+  created_at: DateTime!
+  updated_at: DateTime!
+  # inferences
+  x_opencti_inferences: [Inference]
+  # StixCoreObject
+  createdBy: Identity
+  numberOfConnectedElement: Int!
+  objectMarking: [MarkingDefinition!]
+  objectOrganization: [Organization!]
+  objectLabel: [Label!]
+  externalReferences(first: Int): ExternalReferenceConnection
+  containersNumber: Number
+  containers(first: Int, entityTypes: [String!]): ContainerConnection
+  reports(first: Int): ReportConnection
+  notes(first: Int ,orderBy: StixCoreRelationshipsOrdering,orderMode: OrderingMode ): NoteConnection
+  opinions(first: Int): OpinionConnection
+  observedData(first: Int): ObservedDataConnection
+  groupings(first: Int): GroupingConnection
+  cases(first: Int): CaseConnection
+  stixCoreRelationships(
+    first: Int
+    after: ID
+    orderBy: StixCoreRelationshipsOrdering
+    orderMode: OrderingMode
+    fromId: StixRef
+    toId: StixRef
+    fromTypes: [String]
+    toTypes: [String]
+    relationship_type: String
+    startTimeStart: DateTime
+    startTimeStop: DateTime
+    stopTimeStart: DateTime
+    stopTimeStop: DateTime
+    firstSeenStart: DateTime
+    firstSeenStop: DateTime
+    lastSeenStart: DateTime
+    lastSeenStop: DateTime
+    confidences: [Int]
+    search: String
+    filters: FilterGroup
+  ): StixCoreRelationshipConnection
+  stixCoreObjectsDistribution(
+    relationship_type: [String]
+    toTypes: [String]
+    field: String!
+    startDate: DateTime
+    endDate: DateTime
+    dateAttribute: String
+    operation: StatsOperation!
+    limit: Int
+    order: String
+    types: [String]
+    filters: FilterGroup
+    search: String
+  ): [Distribution] @auth(for: [KNOWLEDGE, EXPLORE])
+  stixCoreRelationshipsDistribution(
+    field: String!
+    operation: StatsOperation!
+    startDate: DateTime
+    endDate: DateTime
+    dateAttribute: String
+    isTo: Boolean
+    limit: Int
+    order: String
+    elementWithTargetTypes: [String]
+    fromId: [String]
+    fromRole: String
+    fromTypes: [String]
+    toId: [String]
+    toRole: String
+    toTypes: [String]
+    relationship_type: [String]
+    confidences: [Int]
+    search: String
+    filters: FilterGroup
+  ): [Distribution] @auth(for: [KNOWLEDGE, EXPLORE])
+  # StixDomainObject
+  revoked: Boolean!
+  confidence: Int
+  lang: String
+  created: DateTime
+  modified: DateTime
+  x_opencti_graph_data: String
+  objectAssignee(orderBy: ObjectAssigneeOrdering, orderMode: OrderingMode): [Assignee!]
+  avatar: OpenCtiFile
+  # Incident
+  name: String
+  first_seen: DateTime
+  last_seen: DateTime
+  objective: String
+  objectParticipant: [Participant!]
+  # Technical
+  creators: [Creator!]
+  toStix: String
+  importFiles(first: Int, prefixMimeType: String): FileConnection
+  pendingFiles(first: Int): FileConnection
+  exportFiles(first: Int): FileConnection
+  editContext: [EditUserContext!]
+  connectors(onlyAlive: Boolean): [Connector]
+  jobs(first: Int): [Work]
+  status: Status
+  workflowEnabled: Boolean
+  currentTechnologies: [Technological!]
+  monitorAssets: [MonitorAssetInfo!]
+  devices: [CustomerDevice!]         
+  networkInfos: [CustomerNetworkInfo!]
+  }
+input OnBoardingInput {
+  currentTechnologies: [TechnologicalInput!]
+  monitorAssets: [MonitorAssetInfoInput!]
+  devices: [CustomerDeviceInput!]
+  networkInfos: [CustomerNetworkInfoInput!]
+}
+input TechnologicalInput {
+  technology: Technology!
+  product: String
+}
+input CustomerNetworkInfoInput {
+  ip: String!
+  description: String!
+}
+input CustomerDeviceInput {
+  deviceType: String
+  vendor: String
+  os: String
+  amount: Int
+}
+input MonitorAssetInfoInput {
+  purpose: String!
+  productName: String!
+  os: String
+  version: String
+  ipAddress: String
+  hostname: String
+  assetLocation: OnLocation!
+  isVm: Boolean!
+  inProduction: Boolean!
+  hasApi: Boolean!
+}

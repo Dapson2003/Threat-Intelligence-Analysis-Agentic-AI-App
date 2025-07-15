@@ -1,0 +1,23 @@
+A security log has been detected with the following content:
+
+{log}
+
+This corresponds to the MITRE ATT&CK technique: {mitre_attack_type}.
+
+Use this information to investigate **which specific technologies, devices, or assets** from the client’s onboarding database are relevant to this type of activity.
+
+You must base your query strictly on what's relevant for detecting or investigating this technique. For example, if the technique involves process execution, tools like EDR or SIEM are likely to apply; if it's network-based, NDR or firewalls may be more appropriate.
+
+You have access to the following onboarding fields:
+
+- `currentTechnologies`: a list of client technologies, using the enum `Technology` (e.g., EDR, SIEM_ELK, WAF, SOAR, etc.)
+- `monitorAssets`: systems or hosts with fields like `purpose`, `hostname`, `productName`, `os`, `assetLocation`, `hasApi`, etc.
+- `devices`: installed hardware or platforms (e.g., `deviceType`, `vendor`, `os`)
+- `networkInfos`: IP ranges or zones, each with `ip` and `description`
+
+Your goal is to:
+1. **Determine what type of telemetry or tooling is relevant for this ATT&CK technique**
+2. **Select the smallest necessary subset of onboarding data needed to proceed**
+3. **Return only a query that will help identify the specific client tools or assets that could assist with detection or investigation**
+
+Be precise. Include a brief reason for the query you generate.
