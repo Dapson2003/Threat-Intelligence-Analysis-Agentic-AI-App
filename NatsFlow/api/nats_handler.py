@@ -6,6 +6,8 @@ from NatsFunction.Nats_Sub import start_nats_subscriber, stop_nats_subscriber,st
 from NatsFunction.Nats_Pub import publish_message as pub_msg
 from NatsFunction.Nats_Pub import publish_Js_message as pub_Js_msg
 from NatsFunction.Nats_JS_Create import create_js_stream as create_stream  
+from NatsFunction.Nats_Fetch_Messages import fetch_last_messages
+from fastapi import HTTPException, Query
 
 subscriber_task = None
 
@@ -18,7 +20,7 @@ class SubscribeRequest(BaseModel):
     
 class JsSubscribeRequest(BaseModel):
     subject: str
-    durable_name: str = "default_durable"
+    durable_name: str = Query("default_durable", description="Durable name for JetStream subscription, defaults to 'default_durable'")
     
 class CreateStreamRequest(BaseModel):
     stream_name: str
@@ -65,3 +67,12 @@ async def publish_Js_message(req: PublishRequest):
 async def create_jetstream_stream(req: CreateStreamRequest):
     await create_stream(req.stream_name, req.subject_prefix)
     return {"status": f"Stream '{req.stream_name}' created for subject prefix '{req.subject_prefix}'"}
+
+async def get_last_js_messages(req: JsSubscribeRequest,count: int = Query(3, description="Number of latest messages to fetch")):
+    try:
+        subject = req.subject
+        durable_name = req.durable_name
+        result = await fetch_last_messages(subject, durable_name, count)
+        return {"status": "success", "messages": result}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
