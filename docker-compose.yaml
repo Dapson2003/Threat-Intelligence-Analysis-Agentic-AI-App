@@ -51,18 +51,18 @@ services:
     volumes:
       - ./ContextAgent:/ContextAgent
 
-  # ip_domain_intelligence:
-  #   build:
-  #     context: ./IP_Domain_Intelligence
-  #     dockerfile: dockerfile
-  #   container_name: IP_Domain_Intelligence
-  #   ports:
-  #     - "9001:9001" 
-  #   env_file:
-  #     - ./IP_Domain_Intelligence/.env
-  #   working_dir: /IP_Domain_Intelligence
-  #   volumes:
-  #     - ./IP_Domain_Intelligence:/IP_Domain_Intelligence
+  ip_domain_intelligence:
+    build:
+      context: ./IP_Domain_Intelligence
+      dockerfile: dockerfile
+    container_name: IP_Domain_Intelligence
+    ports:
+      - "9001:9001" 
+    env_file:
+      - ./IP_Domain_Intelligence/.env
+    working_dir: /IP_Domain_Intelligence
+    volumes:
+      - ./IP_Domain_Intelligence:/IP_Domain_Intelligence
 
   # nats_server:
   #   image: nats:latest
