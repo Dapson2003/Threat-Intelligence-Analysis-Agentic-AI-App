@@ -52,11 +52,8 @@ class AgentFactory:
         Creates an agent that reads a security log and a MITRE ATT&CK type,
         then reasons over it to decide which onboarding data to query using available tools.
         """
-        def load_prompt_template():
-            with open("agents/Ask_Tools_Template.txt", "r") as f:
-                return f.read()
-
-        prompt_template = load_prompt_template()
+        with open("agents/Ask_Tools_Template.txt", "r") as f:
+            prompt_template = f.read()
 
         query_tool = Tool(
             name="query_onboarding_database",
@@ -69,6 +66,27 @@ class AgentFactory:
 
         agent = initialize_agent(
             tools=[query_tool],
+            agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+            llm=self.llm,
+            verbose=True
+        )
+
+        def run(log: str, mitre_attack_type: str) -> str:
+            prompt = prompt_template.format(log=example_log, mitre_attack_type=example_type)
+            return agent.run(prompt)
+
+        return run
+
+    def create_recommending_agent(self):
+        """
+        Creates an agent that reads a security log and a MITRE ATT&CK type,
+        then reasons over it to decide which onboarding data to query using available tools.
+        """
+        with open("agents/Ask_Tools_Template.txt", "r") as f:
+            prompt_template = f.read()
+
+        agent = initialize_agent(
+            tools=[],
             agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
             llm=self.llm,
             verbose=True
