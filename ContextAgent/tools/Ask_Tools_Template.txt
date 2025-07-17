@@ -1,0 +1,40 @@
+A security log has been detected with the following content:
+
+{log}
+
+
+This corresponds to the MITRE ATT&CK technique: `{mitre_attack_type}`.
+
+Your task is to analyze this log and technique, then determine which specific technologies, devices, or assets from the client’s onboarding database are most relevant for detecting or investigating this activity.
+
+---
+
+Your available onboarding fields include:
+
+- `currentTechnologies`: (e.g., EDR, SIEM_ELK, WAF, SOAR, etc.)
+- `monitorAssets`: with fields like `purpose`, `hostname`, `productName`, `os`, `assetLocation`, `hasApi`, `ipAddress`, `inProduction`
+- `devices`: with fields like `deviceType`, `vendor`, `os`
+- `networkInfos`: with `ip` and `description`
+
+---
+
+Return the following in your response:
+
+1. Final Query (in JSON):  
+A concise query for retrieving the relevant onboarding data.
+
+2. Parameters to Use (Field = Value):  
+What filters must be applied (e.g., `hostname = xyz`, `os = Windows`) — inferred from the log or technique.
+
+3. Reasoning:  
+A short explanation of:
+- What detection this technique requires
+- Why the selected tools/devices/assets and parameters are relevant
+
+---
+
+Important Instructions:
+
+- Be precise. Use the smallest data scope necessary.
+- Do not include unrelated tools (e.g., avoid NDR if the attack is purely endpoint-based).
+- Focus only on tools/devices that are capable of detecting, investigating, or preventing the attack technique.

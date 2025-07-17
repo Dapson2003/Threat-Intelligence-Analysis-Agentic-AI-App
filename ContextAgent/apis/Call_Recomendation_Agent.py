@@ -4,10 +4,10 @@ from typing import List, Optional, Tuple, Dict, Any
 from agents.agent_factory import AgentFactory
 from tools.Example_Log_Keeper import example_log_body as example_log
 from tools.Example_Log_Keeper import example_type_body as example_type
-import json
+from tools.Example_Log_Keeper import example_client_tools_body as example_client_tools
 
 # Set up router
-context_agent_router = APIRouter()
+recommendation_agent_router = APIRouter()
 
 # --- Pydantic Models ---
 
@@ -38,14 +38,14 @@ class ExampleTypeBody(BaseModel):
 
 # --- API Endpoint ---
 
-@context_agent_router.post("/call-context-agent/")
-async def call_context_agent(input_log: NodeWrapper):
+@recommendation_agent_router.post("/call-recommendation-agent/")
+async def call_recommendation_agent(input_log: NodeWrapper):
     try:
         agent_factory = AgentFactory()
-        agent = agent_factory.create_ask_tools_agent()
+        agent = agent_factory.create_recommending_agent()
 
         # Feed full node and static example_type_body into agent
-        response = agent(input_log.node, example_type)
+        response = agent(input_log.node, example_type,client_tools_json=example_client_tools)
         return {"status": "success", "result": response}
 
     except Exception as e:

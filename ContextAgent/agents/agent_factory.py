@@ -6,8 +6,10 @@ from langchain.agents import initialize_agent, AgentType
 from langchain.tools import Tool
 from config.Config import cfg
 from DataBaseFolder.getFromDB import query_onboarding_database
-from apis.Example_Log_Keeper import example_log_body as example_log
-from apis.Example_Log_Keeper import example_type_body as example_type
+from tools.Example_Log_Keeper import example_log_body as example_log
+from tools.Example_Log_Keeper import example_type_body as example_type
+from tools.Example_Log_Keeper import example_client_tools_body as example_client_tools
+import json
 
 
 class AgentFactory:
@@ -20,7 +22,7 @@ class AgentFactory:
             callbacks=[handler],
             base_url=self.config.LOCAL_LLM_URL
         )
-        print("⚙️ Using LLM_MODEL:", self.config.LLM_MODEL)
+        print("Using LLM_MODEL:", self.config.LLM_MODEL)
 
     def create_cybersecurity_answer_agent(self):
             """
@@ -52,7 +54,7 @@ class AgentFactory:
         Creates an agent that reads a security log and a MITRE ATT&CK type,
         then reasons over it to decide which onboarding data to query using available tools.
         """
-        with open("agents/Ask_Tools_Template.txt", "r") as f:
+        with open("tools/Ask_Tools_Template.txt", "r") as f:
             prompt_template = f.read()
 
         query_tool = Tool(
@@ -79,21 +81,26 @@ class AgentFactory:
 
     def create_recommending_agent(self):
         """
-        Creates an agent that reads a security log and a MITRE ATT&CK type,
-        then reasons over it to decide which onboarding data to query using available tools.
+        Agent that reads a security log, MITRE ATT&CK type, and client's available tools,
+        and returns recommendation on which tools to use and how.
         """
-        with open("agents/Ask_Tools_Template.txt", "r") as f:
+        
+        with open("tools/Recommend_Template.txt", "r") as f:
             prompt_template = f.read()
 
         agent = initialize_agent(
-            tools=[],
-            agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+            tools=[],  # no tools needed, just reasoning
+            agent=AgentType.CHAT_ZERO_SHOT_REACT_DESCRIPTION,
             llm=self.llm,
             verbose=True
         )
 
-        def run(log: str, mitre_attack_type: str) -> str:
-            prompt = prompt_template.format(log=example_log, mitre_attack_type=example_type)
+        def run(log: str, mitre_attack_type: str, client_tools_json: dict) -> str:
+            prompt = prompt_template.format(
+                log=example_log,
+                mitre_attack_type=example_type,
+                client_tools_json=json.dumps(example_client_tools, indent=2)
+            )
             return agent.run(prompt)
-
+        
         return run
