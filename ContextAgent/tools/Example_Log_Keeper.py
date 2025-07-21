@@ -507,7 +507,7 @@ example_type_body = {
       ]
     ]
   },
-  "Mitre-Match": [
+  "Mitre_Match": [
     {
       "tactic": "Defense Evasion",
       "technique": "Abuse Elevation Control Mechanism",

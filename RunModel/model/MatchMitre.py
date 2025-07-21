@@ -38,8 +38,8 @@ def optimized_match(csv_path: str, prediction_dict: dict) -> dict:
                     "Detection": row["Detection"]
                 })
 
-    # Add matches to original JSON under "Mitre-Match"
-    full_dict["Mitre-Match"] = matched_rows
+    # Add matches to original JSON under "Mitre_Match"
+    full_dict["Mitre_Match"] = matched_rows
     return full_dict    
 if __name__ == "__main__":
     # === Paste your JSON string here ===
@@ -81,5 +81,5 @@ if __name__ == "__main__":
     # Run the matching
     result_json = optimized_match(csv_path, prediction_json)
 
-    # Print final JSON with Mitre-Match included
+    # Print final JSON with Mitre_Match included
     print(result_json)
