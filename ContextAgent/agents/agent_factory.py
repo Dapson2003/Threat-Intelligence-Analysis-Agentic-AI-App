@@ -79,28 +79,31 @@ class AgentFactory:
 
         return run
 
+
     def create_recommending_agent(self):
         """
-        Agent that reads a security log, MITRE ATT&CK type, and client's available tools,
-        and returns recommendation on which tools to use and how.
+        Agent that returns a recommendation based on log, MITRE ATT&CK prediction, and client tools.
+        Uses fallback examples if input not provided.
         """
-        
         with open("tools/Recommend_Template.txt", "r") as f:
             prompt_template = f.read()
 
-        agent = initialize_agent(
-            tools=[],  # no tools needed, just reasoning
-            agent=AgentType.CHAT_ZERO_SHOT_REACT_DESCRIPTION,
-            llm=self.llm,
-            verbose=True
+        prompt = PromptTemplate(
+            input_variables=["log", "mitre_attack_type", "client_tools_json"],
+            template=prompt_template
         )
-
-        def run(log: str, mitre_attack_type: str, client_tools_json: dict) -> str:
-            prompt = prompt_template.format(
-                log=example_log,
-                mitre_attack_type=example_type,
-                client_tools_json=json.dumps(example_client_tools, indent=2)
-            )
-            return agent.run(prompt)
         
+        chain = LLMChain(llm=self.llm, prompt=prompt, verbose=True)
+
+        def run(
+            log: dict = example_log["node"],
+            mitre_attack_type: dict = example_type,
+            client_tools_json: dict = example_client_tools,
+        ) -> str:
+            return chain.run({
+                "log": json.dumps(log, indent=2),
+                "mitre_attack_type": json.dumps(mitre_attack_type, indent=2),
+                "client_tools_json": json.dumps(client_tools_json, indent=2),
+            })
+
         return run
