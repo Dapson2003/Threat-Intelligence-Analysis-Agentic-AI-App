@@ -3,6 +3,7 @@ anthropic
 langgraph
 typing_extensions
 langchain_community
+langchain_huggingface
 #langchain_openai
 #langchain_google_genai
 langchain_experimental
@@ -21,3 +22,5 @@ typing-extensions
 langchain_ollama
 fastapi 
 uvicorn
+faiss-cpu
+sentence-transformers
