@@ -1,17 +1,7 @@
-#NotUsed
-#GOOGLE_API_KEY= key
-
 LLM_MODEL=qwen3:235b
 LLM_TEMPERATURE=0.05
 LOCAL_LLM_URL= url
 #Url for runing ollama hosteda model
-
-
-
-#External Services
-IPINFO_API_KEY= key
-VIRUSTOTAL_API_KEY= key
-
 
 #You can comment on the Langsmith api key if you dont want to use it.
 LANGCHAIN_TRACING_V2=true
