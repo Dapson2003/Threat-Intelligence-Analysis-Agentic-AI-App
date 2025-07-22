@@ -25,19 +25,18 @@ services:
     volumes:
       - ./RunModel:/RunModel
 
-  debug_agent:
+  contextagentscript:
     build:
-      context: ./DebugAgent
+      context: ./ContextAgent_Script
       dockerfile: dockerfile
-    container_name: DebugAgent
+    container_name: ContextAgent_Script
     ports:
       - "9002:9002"
     env_file:
-      - ./DebugAgent/.env  
-    working_dir: /DebugAgent
+      - ./ContextAgent_Script/.env  
+    working_dir: /ContextAgent_Script
     volumes:
-      - ./DebugAgent:/DebugAgent
-
+      - ./ContextAgent_Script:/ContextAgent_Script
   # context_agent:
   #   build:
   #     context: ./ContextAgent
