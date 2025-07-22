@@ -33,7 +33,18 @@ def build_rag_chain():
         question: str = "What action should be taken?"
     ) -> str:
         docs = retriever.get_relevant_documents(question)
-        context = "\n\n".join([doc.page_content for doc in docs])
+
+        # Only include docs that mention tools, EDR, XDR, or detection methods
+        keywords = ["tool", "edr", "xdr", "siem", "detection", "alert", "agent", "sensor", "investigate"]
+
+        def is_tool_related(text: str):
+            lowered = text.lower()
+            return any(keyword in lowered for keyword in keywords)
+
+        filtered_docs = [doc.page_content for doc in docs if is_tool_related(doc.page_content)]
+
+        # Fallback if all were filtered out
+        context = "\n\n".join(filtered_docs) if filtered_docs else "\n\n".join([doc.page_content for doc in docs[:2]])
 
         return chain.run({
             "log": json.dumps(log, indent=2),

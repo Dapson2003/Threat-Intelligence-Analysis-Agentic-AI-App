@@ -38,18 +38,18 @@ services:
     volumes:
       - ./DebugAgent:/DebugAgent
 
-  context_agent:
-    build:
-      context: ./ContextAgent
-      dockerfile: dockerfile
-    container_name: ContextAgent
-    ports:
-      - "9005:9005"
-    env_file:
-      - ./ContextAgent/.env  
-    working_dir: /ContextAgent
-    volumes:
-      - ./ContextAgent:/ContextAgent
+  # context_agent:
+  #   build:
+  #     context: ./ContextAgent
+  #     dockerfile: dockerfile
+  #   container_name: ContextAgent
+  #   ports:
+  #     - "9005:9005"
+  #   env_file:
+  #     - ./ContextAgent/.env  
+  #   working_dir: /ContextAgent
+  #   volumes:
+  #     - ./ContextAgent:/ContextAgent
 
   ip_domain_intelligence:
     build:
