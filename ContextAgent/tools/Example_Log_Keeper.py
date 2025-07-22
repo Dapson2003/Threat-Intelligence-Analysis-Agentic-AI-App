@@ -1,3 +1,4 @@
+#Example_Log_Keeper.py
 example_log_body = {
           "node": {
             "id": "ea9632d7-8202-4b1d-92f1-d2ea18b542cf",
@@ -455,6 +456,129 @@ example_log_body = {
           }
         }
 
+example_prediction_body = {
+  "prediction": {
+    "tactic": [
+      [
+        "Privilege Escalation",
+        0.8073485842635361
+      ],
+      [
+        "Defense Evasion",
+        0.1913660317755721
+      ]
+    ],
+    "technique": [
+      [
+        "Abuse Elevation Control Mechanism",
+        0.9999484878515933
+      ]
+    ],
+    "subtechnique": [
+      [
+        "Bypass User Account Control",
+        0.999921352605669
+      ]
+    ]
+  }
+}
+example_type_body = {
+  "prediction": {
+    "tactic": [
+      [
+        "Privilege Escalation",
+        0.8073485842635361
+      ],
+      [
+        "Defense Evasion",
+        0.1913660317755721
+      ]
+    ],
+    "technique": [
+      [
+        "Abuse Elevation Control Mechanism",
+        0.9999484878515933
+      ]
+    ],
+    "subtechnique": [
+      [
+        "Bypass User Account Control",
+        0.999921352605669
+      ]
+    ]
+  },
+  "Mitre_Match": [
+    {
+      "tactic": "Defense Evasion",
+      "technique": "Abuse Elevation Control Mechanism",
+      "subtechnique": "",
+      "Detection": "DS0024,DS0002,DS0009,DS0022,DS0017"
+    },
+    {
+      "tactic": "Defense Evasion",
+      "technique": "Abuse Elevation Control Mechanism",
+      "subtechnique": "Bypass User Account Control",
+      "Detection": "DS0024,DS0009,DS0017"
+    }
+  ]
+}
+
+example_client_tools_body = {
+    "currentTechnologies": [
+        {
+            "technology": "EDR",
+            "product": "TrendMicro"
+        },
+        {
+            "technology": "SIEM/ELK",
+            "product": "null"
+        },
+        {
+            "technology": "SOAR",
+            "product": "null"
+        }
+    ],
+    "monitorAssets": [
+        {
+            "hostname": "yb-lt2338.yomabank.org",
+            "ipAddress": "192.168.100.28",
+            "assetLocation": "null",
+            "InProduction": "null",
+            "IncludedAPi": "null",
+            "os": "null",
+            "purpose": "null"
+        }
+    ]
+  }
+
+
+example_client_tools_body_null = {
+    "currentTechnologies": [
+        {
+            "technology": "EDR",
+            "product": "null"
+        },
+        {
+            "technology": "SIEM/ELK",
+            "product": "null"
+        },
+        {
+            "technology": "SOAR",
+            "product": "null"
+        }
+    ],
+    "monitorAssets": [
+        {
+            "hostname": "yb-lt2338.yomabank.org",
+            "ipAddress": "192.168.100.28",
+            "assetLocation": "null",
+            "InProduction": "null",
+            "IncludedAPi": "null",
+            "os": "null",
+            "purpose": "null"
+        }
+    ]
+  }
 
 example_prediction_body = {
   "prediction": {
@@ -481,4 +605,32 @@ example_prediction_body = {
       ]
     ]
   }
+}
+example_type_body_null = {
+  "prediction": {
+    "tactic": [
+      [
+        "Privilege Escalation",
+        0.8073485842635361
+      ],
+      [
+        "Defense Evasion",
+        0.1913660317755721
+      ]
+    ],
+    "technique": [
+      [
+        "Abuse Elevation Control Mechanism",
+        0.9999484878515933
+      ]
+    ],
+    "subtechnique": [
+      [
+        "Bypass User Account Control",
+        0.999921352605669
+      ]
+    ]
+  },
+  "Mitre-Match": [
+  ]
 }

@@ -15,3 +15,10 @@ IP_Domain_Intelligence/LocalLLM/**/*.json
 #Ignore In RunModel
 RunModel/model/**/*.pkl
 *.zip
+
+
+#Ignore In ContextAgent
+
+ContextAgent/temp/
+ContextAgent/rag/vector_db/index.pkl
+ContextAgent/rag/vector_db/index.faiss

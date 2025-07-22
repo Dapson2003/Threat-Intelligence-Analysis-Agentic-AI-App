@@ -2,7 +2,7 @@
 FROM python:3.13.5-slim
 
 # Set working directory to the IP_Domain_Intelligence folder
-WORKDIR /DebugAgent
+WORKDIR /ContextAgent_Script
 
 # Copy the entire content of IP_Domain_Intelligence into the container
 COPY . .

@@ -1,9 +1,12 @@
+import json
 from langchain.chains import LLMChain
 from langchain_core.prompts import PromptTemplate
 from langchain_ollama import OllamaLLM
 from langchain_core.callbacks import StdOutCallbackHandler
 from config.Config import cfg
-
+from tools.Example_Log_Keeper import example_log_body2 as example_log
+from tools.Example_Log_Keeper import example_type_body2 as example_type
+#from tools.Example_Log_Keeper import example_client_tools_body as example_client_tools
 
 class AgentFactory:
     def __init__(self):
@@ -41,3 +44,30 @@ class AgentFactory:
             )
 
             return chain
+    def create_recommending_agent(self):
+        """
+        Agent that returns a recommendation based on log, MITRE ATT&CK prediction, and client tools.
+        Uses fallback examples if input not provided.
+        """
+        with open("tools/Recommend_with_Context_Template.txt", "r") as f:
+            prompt_template = f.read()
+
+        prompt = PromptTemplate(
+            input_variables=["log", "mitre_attack_type", "client_tools_json"],
+            template=prompt_template
+        )
+        
+        chain = LLMChain(llm=self.llm, prompt=prompt, verbose=True)
+
+        def run(
+            log: dict = example_log["node"],
+            mitre_attack_type: dict = example_type,
+            client_tools_json: dict = None,
+        ) -> str:
+            return chain.run({
+                "log": json.dumps(log, indent=2),
+                "mitre_attack_type": json.dumps(mitre_attack_type, indent=2),
+                "client_tools_json": json.dumps(client_tools_json, indent=2),
+            })
+
+        return run
