@@ -3,14 +3,25 @@ import uvicorn
 from apis.root_api import root_router
 from apis.Call_Answer_Agent import agent_router
 from apis.Call_Recomendation_Agent import recommendation_agent_router
+from Connection_to_Nats import OpenModelServer
+from config.Config import cfg
 
 # Create the FastAPI app
-app = FastAPI()
-
+app = FastAPI(title="Agent Context API")
+#OpenModelServer base on environment variable
+@app.on_event("startup")
+async def startup_event():
+    auto_open = cfg.AUTO_OPEN_CONNECTION # Is boolean, default is False
+    if auto_open:
+        print("AUTO_OPEN_CONNECTION is enabled. Connecting...")
+        await OpenModelServer()
+    else:
+        print("AUTO_OPEN_CONNECTION is disabled. Skipping startup connection.")
 # Include the routers for different parts of the app
 app.include_router(root_router)
 app.include_router(agent_router)
 app.include_router(recommendation_agent_router)
+
 
 def start_api():
     """

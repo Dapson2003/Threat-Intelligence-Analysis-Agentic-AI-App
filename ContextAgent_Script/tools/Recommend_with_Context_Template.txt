@@ -15,16 +15,9 @@ Your task is to recommend how to investigate or detect the above security log us
 
 Guidelines:
 
-1. If `MITRE ATT&CK Type:` is:
-   {
-   "prediction": {
-      "tactic": [],
-      "technique": [],
-      "subtechnique": []
-   },
-   "Mitre_Match": []
-   }
-   → It means MITRE data is already in the log — extract it from there.
+1. If the MITRE ATT&CK Type includes an empty prediction and match block
+   (i.e., prediction and Mitre_Match are both empty),
+   then extract MITRE data directly from the log.
 
 2. If the "Client Tools" section includes the message:
    `"No client onboarding data available for this definition."`

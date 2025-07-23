@@ -20,3 +20,4 @@ requests
 langchain_ollama
 fastapi 
 uvicorn
+nats-py

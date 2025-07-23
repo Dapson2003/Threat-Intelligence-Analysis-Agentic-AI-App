@@ -7,6 +7,7 @@ from apis.ConvertOne import convert_router
 from apis.OpenServer import Open_Server_router  
 from apis.MatchMitre import match_mitre_router
 from apis.PredictIfEmptyOne import predict_if_empty_router
+from apis.CheckFlow import check_flow_router
 from Connection_to_Nats import OpenModelServer
 from config.Config import cfg
 
@@ -28,4 +29,5 @@ app.include_router(convert_router, prefix="/api")
 app.include_router(Open_Server_router, prefix="/api")
 app.include_router(match_mitre_router, prefix="/api")
 app.include_router(predict_if_empty_router, prefix="/api")
+app.include_router(check_flow_router, prefix="/api")
 
