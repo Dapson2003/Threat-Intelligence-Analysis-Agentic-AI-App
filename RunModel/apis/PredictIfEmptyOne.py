@@ -2,9 +2,9 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 from typing import Dict, Any
-from model.runModel import clean_run_prediction
+from model.predict_if_mitre_empty import predict_with_mitre_check
 from apis.Example_Log_Keeper import example_log_body as example_log
-predict_router = APIRouter()
+predict_if_empty_router = APIRouter()
 
 class NodeWrapper(BaseModel):
     node: Dict[str, Any] = Field(
@@ -12,12 +12,12 @@ class NodeWrapper(BaseModel):
         example=example_log["node"]  # This is the example shown in Swagger UI
     )
 
-@predict_router.post(
-    "/predict"
+@predict_if_empty_router.post(
+    "/predict_if_empty"
 )
-async def predict(alert: NodeWrapper):
+async def predict_if_empty(alert: NodeWrapper):
     try:
-        result = clean_run_prediction(alert.model_dump())
+        result = predict_with_mitre_check(alert.model_dump())
 
         # Optional logging
         with open("log.txt", "a") as f:

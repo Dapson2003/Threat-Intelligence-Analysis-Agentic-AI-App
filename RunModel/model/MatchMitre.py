@@ -41,45 +41,48 @@ def optimized_match(csv_path: str, prediction_dict: dict) -> dict:
     # Add matches to original JSON under "Mitre_Match"
     full_dict["Mitre_Match"] = matched_rows
     return full_dict    
-if __name__ == "__main__":
-    # === Paste your JSON string here ===
-    prediction_json = '''
-    {
-      "prediction": {
-        "tactic": [
-          [
-            "Privilege Escalation",
-            0.8073485842635361
-          ],
-          [
-            "Defense Evasion",
-            0.1913660317755721
-          ]
-        ],
-        "technique": [
-          [
-            "Abuse Elevation Control Mechanism",
-            0.9999484878515933
-          ]
-        ],
-        "subtechnique": [
-          [
-            "Bypass User Account Control",
-            0.999921352605669
-          ]
-        ]
-      }
-    }
-    '''
+  
+  
+  
+# if __name__ == "__main__":
+#     # === Paste your JSON string here ===
+#     prediction_json = '''
+#     {
+#       "prediction": {
+#         "tactic": [
+#           [
+#             "Privilege Escalation",
+#             0.8073485842635361
+#           ],
+#           [
+#             "Defense Evasion",
+#             0.1913660317755721
+#           ]
+#         ],
+#         "technique": [
+#           [
+#             "Abuse Elevation Control Mechanism",
+#             0.9999484878515933
+#           ]
+#         ],
+#         "subtechnique": [
+#           [
+#             "Bypass User Account Control",
+#             0.999921352605669
+#           ]
+#         ]
+#       }
+#     }
+#     '''
 
-    # === Set the path to your detection CSV ===
-    csv_path = "./model/MitreMatch.csv"
+#     # === Set the path to your detection CSV ===
+#     csv_path = "./model/MitreMatch.csv"
     
-    # Parse input string into dict
-    prediction_dict = json.loads(prediction_json)
+#     # Parse input string into dict
+#     prediction_dict = json.loads(prediction_json)
 
-    # Run the matching
-    result_json = optimized_match(csv_path, prediction_json)
+#     # Run the matching
+#     result_json = optimized_match(csv_path, prediction_json)
 
-    # Print final JSON with Mitre_Match included
-    print(result_json)
+#     # Print final JSON with Mitre_Match included
+#     print(result_json)

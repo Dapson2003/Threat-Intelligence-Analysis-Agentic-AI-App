@@ -16,7 +16,7 @@ class PredictionRequest(BaseModel):
 @match_mitre_router.post("/match-mitre")
 async def match_mitre(request: PredictionRequest):
     try:
-        result = optimized_match(CSV_PATH, request.dict())
+        result = optimized_match(CSV_PATH, request.model_dump())
         return result
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
