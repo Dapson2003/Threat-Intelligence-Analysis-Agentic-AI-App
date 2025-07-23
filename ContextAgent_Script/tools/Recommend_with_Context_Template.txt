@@ -15,13 +15,24 @@ Your task is to recommend how to investigate or detect the above security log us
 
 Guidelines:
 
-1. If the "Client Tools" section includes the message:
+1. If `MITRE ATT&CK Type:` is:
+   {
+   "prediction": {
+      "tactic": [],
+      "technique": [],
+      "subtechnique": []
+   },
+   "Mitre_Match": []
+   }
+   → It means MITRE data is already in the log — extract it from there.
+
+2. If the "Client Tools" section includes the message:
    `"No client onboarding data available for this definition."`
    - Provide **two parts** in your answer:
      a. **Conventional Approach**: Explain which tools would normally be used and how they should be configured.
      b. **Generic/Manual Approach**: Describe how to investigate using Windows built-in tools, free scripts, or open-source solutions.
 
-2. If tools *are* provided:
+3. If tools *are* provided:
    - Do NOT mention or recommend any tools where `"product": "null"` or unprovided.
    - Only use the tools listed in the JSON.
    - If a tool name is listed (e.g., "TrendMicro"), assume **basic EDR only** — do NOT assume SOAR, SIEM, or XDR capabilities unless explicitly stated.
