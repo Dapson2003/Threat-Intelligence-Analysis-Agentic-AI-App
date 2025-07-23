@@ -1,63 +1,63 @@
 {
   "node": {
+    "id": "4fc171b7-fe0f-473f-81ca-afaed1438d5b",
     "alert_id": "N-Health-2502-000001",
     "alert_name": "svchost.exe on host NH-PUWANAT-SU",
+    "tags": "Alert",
+    "incident_type": "null",
+    "severity": "Low",
     "alert_status": "Closed",
+    "log_source": "Palo Alto Cortex XDR",
     "case_result": "FalsePositives",
+    "detected_time": "2025-02-28T09:23:16.000Z",
+    "mitre": [],
+    "objectMarking": [
+      {
+        "id": "03ec5d32-5cca-4c24-8bbc-8cef8c4dcd3f",
+        "definition": "N-Health"
+      }
+    ],
     "contexts": {
       "domain": "null",
       "endpoint_type": "null",
       "os": "Windows",
+      "user": "NT AUTHORITY\\SYSTEM",
+      "user_priv": "null",
       "src_ip": [
         "10.148.61.24"
-      ],
-      "user": "NT AUTHORITY\\SYSTEM",
-      "user_priv": "null"
+      ]
     },
-    "detected_time": "2025-02-28T09:23:16.000Z",
     "events": [
       {
-        "cmd_line": "C:\\Windows\\system32\\svchost.exe -k LocalService -p -s WebClient",
         "domain": "null",
         "dst_ip": "null",
         "dst_port": "null",
-        "event_type": "Network Connections",
-        "file_name": "svchost.exe",
-        "file_path": "C:\\Windows\\System32\\svchost.exe",
-        "file_size": "null",
-        "hash": {
-          "md5": "b7f884c1b74a263f746ee12a5f7c9f6a",
-          "sha1": "null",
-          "sha256": "add683a6910abbbf0e28b557fad0ba998166394932ae2aca069d9aa19ea8fe88"
-        },
-        "hash_malicious": "null",
-        "ip_malicious": "null",
-        "parent_process": "null",
         "src_ip": "null",
         "src_port": "null",
-        "user": "null"
+        "user": "null",
+        "ip_malicious": "null",
+        "hash_malicious": "null",
+        "hash": {
+          "sha1": "null",
+          "sha256": "add683a6910abbbf0e28b557fad0ba998166394932ae2aca069d9aa19ea8fe88",
+          "md5": "b7f884c1b74a263f746ee12a5f7c9f6a"
+        },
+        "file_name": "svchost.exe",
+        "file_size": "null",
+        "file_path": "C:\\Windows\\System32\\svchost.exe",
+        "cmd_line": "C:\\Windows\\system32\\svchost.exe -k LocalService -p -s WebClient",
+        "parent_process": "null",
+        "event_type": "Network Connections"
       }
     ],
-    "id": "4fc171b7-fe0f-473f-81ca-afaed1438d5b",
-    "incident_type": "null",
-    "log_source": "Palo Alto Cortex XDR",
-    "mitre": [],
-    "objectMarking": [
-      {
-        "definition": "N-Health",
-        "id": "03ec5d32-5cca-4c24-8bbc-8cef8c4dcd3f"
-      }
-    ],
-    "severity": "Low",
     "sla": {
-      "mtta": 6,
       "mttd": 24,
+      "mtta": 6,
+      "mttt": 4,
       "mtti": 986,
       "mttn": "null",
-      "mttr": "null",
-      "mttt": 4,
-      "mttv": 2156.666
-    },
-    "tags": "Alert"
+      "mttv": 2156.666,
+      "mttr": "null"
+    }
   }
 }
