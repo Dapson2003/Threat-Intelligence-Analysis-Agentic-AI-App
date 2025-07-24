@@ -1,7 +1,7 @@
 from config.Config import cfg
 from NatsFunction.Nats_Send_New import send_to_next_agent
 from NatsFunction.Nats_Client import nc  
-
+from nats.js.api import DeliverPolicy
 subscriptions = {}  # Track subscriptions by subject
 
 
@@ -34,6 +34,7 @@ async def start_nats_subscriber_with_js(subject: str, durable_name: str = "defau
             cb=message_handler,
             durable=durable_name
             #,queue=queue_name
+            ,deliver_policy=DeliverPolicy.NEW
         )
         #print(f"Subscribed with queue group: '{queue_name}'")
     else:
