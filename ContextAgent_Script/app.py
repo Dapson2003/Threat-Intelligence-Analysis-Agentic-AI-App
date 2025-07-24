@@ -3,25 +3,30 @@ import uvicorn
 from apis.root_api import root_router
 from apis.Call_Answer_Agent import agent_router
 from apis.Call_Recomendation_Agent import recommendation_agent_router
-from Connection_to_Nats import OpenModelServer
+from apis.Manage_Service import manage_service_router  
+from NatsFunction.Connection_to_Nats import OpenService,CloseService
+
+from contextlib import asynccontextmanager
 from config.Config import cfg
 
-# Create the FastAPI app
-app = FastAPI(title="Agent Context API")
-#OpenModelServer base on environment variable
-@app.on_event("startup")
-async def startup_event():
-    auto_open = cfg.AUTO_OPEN_CONNECTION # Is boolean, default is False
-    if auto_open:
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    if cfg.AUTO_OPEN_CONNECTION:
         print("AUTO_OPEN_CONNECTION is enabled. Connecting...")
-        await OpenModelServer()
+        await OpenService()
     else:
         print("AUTO_OPEN_CONNECTION is disabled. Skipping startup connection.")
-# Include the routers for different parts of the app
-app.include_router(root_router)
-app.include_router(agent_router)
-app.include_router(recommendation_agent_router)
 
+    yield
+
+    print("🔻 Shutting down — cleaning up NATS connection...")
+    await CloseService()
+
+app = FastAPI(title="Agent Model API", lifespan=lifespan)
+app.include_router(root_router, prefix="/api")
+app.include_router(agent_router, prefix="/api")
+app.include_router(recommendation_agent_router, prefix="/api")
+app.include_router(manage_service_router, prefix="/api") 
 
 def start_api():
     """
