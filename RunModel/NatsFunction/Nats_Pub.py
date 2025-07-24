@@ -1,6 +1,6 @@
 import asyncio
 import json
-from NatsFunction.Connection_to_Nats import nc  
+from NatsFunction.Nats_Client import nc  
 from config.Config import cfg
 
 async def publish_message(subject: str, message: dict):
