@@ -1,7 +1,7 @@
 # api/routes.py
 from fastapi import APIRouter
 from api import nats_handler
-from api.nats_handler import PublishRequest, SubscribeRequest, JsSubscribeRequest,CreateStreamRequest
+from api.nats_handler import PublishRequest, SubscribeRequest, JsSubscribeRequest,CreateStreamRequest,DeleteStreamRequest
 
 router = APIRouter()
 
@@ -32,3 +32,7 @@ async def create_stream(req: CreateStreamRequest):
 @router.post("/get-latest-messages/")
 async def get_lastest_Js_messages(req: JsSubscribeRequest,count: int = 3):
     return await nats_handler.get_last_js_messages(req, count)
+
+@router.post("/stream/delete")
+async def delete_stream_api(req: DeleteStreamRequest):
+    return await nats_handler.delete_jetstream_stream(req)

@@ -23,6 +23,7 @@ async def create_js_stream(input_stream: str, input_filter: dict):
                 storage="memory"  # Or use "file" for disk-backed persistence
             )
         )
+        await js.stream_info("model_stream")  # Will raise NotFoundError if not created
         print(f"✅ Stream '{stream_name}' created with subject(s): {subject_filter}")
     except Exception as e:
         if "stream name already in use" in str(e).lower():
