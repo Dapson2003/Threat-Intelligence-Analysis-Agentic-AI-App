@@ -19,4 +19,4 @@ async def publish_Js_message(subject: str, message: dict):
     js = nc.jetstream()
     await js.publish(subject, json.dumps(message).encode())
     print(f"Published JS message to subject '{subject}'")
-
+    return message

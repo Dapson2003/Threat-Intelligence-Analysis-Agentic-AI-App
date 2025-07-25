@@ -9,7 +9,7 @@ subscriptions = {}  # Track subscriptions by subject
 async def message_handler(msg):
     data_str = msg.data.decode("utf-8", errors="replace")
     await send_to_next_agent(data_str)
-
+    await msg.ack() 
 
 async def start_nats_subscriber(subject: str):
     global subscriptions

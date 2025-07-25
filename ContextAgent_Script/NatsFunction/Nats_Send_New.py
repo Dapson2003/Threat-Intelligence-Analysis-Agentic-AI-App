@@ -8,12 +8,14 @@ async def send_to_next_agent(data_str):
     #Log the received message
     
     data_dict = json.loads(data_str)
-    print(f"log received data: {data_dict}")
+    with open("log.txt", "a", encoding="utf-8") as f:
+        f.write(data_str)
     try:    
         #Run The Model and Publish the result
         result = await call_recommendation_agent_from_script(data_dict)
         Pub_Out = await publish_js_message(cfg.OUTPUT_SUBJECT, result)
         print(f"Data Sucessfully Pub : {Pub_Out}")
+        return None
         
     except Exception as e:
         data_str = f"<decode-error: {e}>"
