@@ -1,0 +1,334 @@
+[
+  {
+    "log": {
+      "node": {
+        "id": "cb5edbac-8c36-4074-8af4-94a2a50ba7df",
+        "alert_id": "NHEALTH-TELEMETRY-2504-000027",
+        "alert_name": "Network Firewall Threat detected",
+        "tags": "Telemetry",
+        "incident_type": null,
+        "severity": "Medium",
+        "alert_status": "Closed",
+        "log_source": "Paloalto",
+        "case_result": "TruePositives",
+        "detected_time": "2025-04-22T10:42:23.708Z",
+        "mitre": [
+          {
+            "id": "T1190",
+            "link": "https://attack.mitre.org/techniques/T1190//",
+            "name_tactics": "Initial Access",
+            "name_technique": "Exploit Public-Facing Application",
+            "name_subtechnique": null
+          }
+        ],
+        "objectMarking": [
+          {
+            "id": "03ec5d32-5cca-4c24-8bbc-8cef8c4dcd3f",
+            "definition": "N-Health"
+          }
+        ],
+        "contexts": {
+          "domain": null,
+          "endpoint_type": "Network",
+          "os": null,
+          "user": null,
+          "user_priv": null,
+          "src_ip": [
+            "10.114.19.12"
+          ]
+        },
+        "events": [
+          {
+            "domain": null,
+            "dst_ip": [
+              "8.8.4.4"
+            ],
+            "dst_port": null,
+            "src_ip": null,
+            "src_port": null,
+            "user": null,
+            "ip_malicious": true,
+            "hash_malicious": true,
+            "hash": {
+              "sha1": null,
+              "sha256": null,
+              "md5": null
+            },
+            "file_name": null,
+            "file_size": null,
+            "file_path": null,
+            "cmd_line": null,
+            "parent_process": null,
+            "event_type": "THREAT"
+          }
+        ],
+        "sla": {
+          "mttd": 8,
+          "mtta": 8,
+          "mttt": 21,
+          "mtti": null,
+          "mttn": null,
+          "mttv": 119.08,
+          "mttr": null
+        }
+      }
+    },
+    "type": {
+      "prediction": {
+        "tactic": [],
+        "technique": [],
+        "subtechnique": []
+      },
+      "Mitre_Match": []
+    }
+  },
+  {
+    "log": {
+      "node": {
+        "id": "cb5edbac-8c36-4074-8af4-94a2a50ba7df",
+        "alert_id": "NHEALTH-TELEMETRY-2504-000027",
+        "alert_name": "Network Firewall Threat detected",
+        "tags": "Telemetry",
+        "incident_type": null,
+        "severity": "Medium",
+        "alert_status": "Closed",
+        "log_source": "Paloalto",
+        "case_result": "TruePositives",
+        "detected_time": "2025-04-22T10:42:23.708Z",
+        "mitre": [
+          {
+            "id": "T1190",
+            "link": "https://attack.mitre.org/techniques/T1190//",
+            "name_tactics": "Initial Access",
+            "name_technique": "Exploit Public-Facing Application",
+            "name_subtechnique": null
+          }
+        ],
+        "objectMarking": [
+          {
+            "id": "03ec5d32-5cca-4c24-8bbc-8cef8c4dcd3f",
+            "definition": "N-Health"
+          }
+        ],
+        "contexts": {
+          "domain": null,
+          "endpoint_type": "Network",
+          "os": null,
+          "user": null,
+          "user_priv": null,
+          "src_ip": [
+            "10.114.19.12"
+          ]
+        },
+        "events": [
+          {
+            "domain": null,
+            "dst_ip": [
+              "8.8.4.4"
+            ],
+            "dst_port": null,
+            "src_ip": null,
+            "src_port": null,
+            "user": null,
+            "ip_malicious": true,
+            "hash_malicious": true,
+            "hash": {
+              "sha1": null,
+              "sha256": null,
+              "md5": null
+            },
+            "file_name": null,
+            "file_size": null,
+            "file_path": null,
+            "cmd_line": null,
+            "parent_process": null,
+            "event_type": "THREAT"
+          }
+        ],
+        "sla": {
+          "mttd": 8,
+          "mtta": 8,
+          "mttt": 21,
+          "mtti": null,
+          "mttn": null,
+          "mttv": 119.08,
+          "mttr": null
+        }
+      }
+    },
+    "type": {
+      "prediction": {
+        "tactic": [],
+        "technique": [],
+        "subtechnique": []
+      },
+      "Mitre_Match": []
+    }
+  },
+  {
+    "log": {
+      "node": {
+        "id": "cb5edbac-8c36-4074-8af4-94a2a50ba7df",
+        "alert_id": "NHEALTH-TELEMETRY-2504-000027",
+        "alert_name": "Network Firewall Threat detected",
+        "tags": "Telemetry",
+        "incident_type": null,
+        "severity": "Medium",
+        "alert_status": "Closed",
+        "log_source": "Paloalto",
+        "case_result": "TruePositives",
+        "detected_time": "2025-04-22T10:42:23.708Z",
+        "mitre": [
+          {
+            "id": "T1190",
+            "link": "https://attack.mitre.org/techniques/T1190//",
+            "name_tactics": "Initial Access",
+            "name_technique": "Exploit Public-Facing Application",
+            "name_subtechnique": null
+          }
+        ],
+        "objectMarking": [
+          {
+            "id": "03ec5d32-5cca-4c24-8bbc-8cef8c4dcd3f",
+            "definition": "N-Health"
+          }
+        ],
+        "contexts": {
+          "domain": null,
+          "endpoint_type": "Network",
+          "os": null,
+          "user": null,
+          "user_priv": null,
+          "src_ip": [
+            "10.114.19.12"
+          ]
+        },
+        "events": [
+          {
+            "domain": null,
+            "dst_ip": [
+              "8.8.4.4"
+            ],
+            "dst_port": null,
+            "src_ip": null,
+            "src_port": null,
+            "user": null,
+            "ip_malicious": true,
+            "hash_malicious": true,
+            "hash": {
+              "sha1": null,
+              "sha256": null,
+              "md5": null
+            },
+            "file_name": null,
+            "file_size": null,
+            "file_path": null,
+            "cmd_line": null,
+            "parent_process": null,
+            "event_type": "THREAT"
+          }
+        ],
+        "sla": {
+          "mttd": 8,
+          "mtta": 8,
+          "mttt": 21,
+          "mtti": null,
+          "mttn": null,
+          "mttv": 119.08,
+          "mttr": null
+        }
+      }
+    },
+    "type": {
+      "prediction": {
+        "tactic": [],
+        "technique": [],
+        "subtechnique": []
+      },
+      "Mitre_Match": []
+    }
+  },
+  {
+    "log": {
+      "node": {
+        "id": "cb5edbac-8c36-4074-8af4-94a2a50ba7df",
+        "alert_id": "NHEALTH-TELEMETRY-2504-000027",
+        "alert_name": "Network Firewall Threat detected",
+        "tags": "Telemetry",
+        "incident_type": null,
+        "severity": "Medium",
+        "alert_status": "Closed",
+        "log_source": "Paloalto",
+        "case_result": "TruePositives",
+        "detected_time": "2025-04-22T10:42:23.708Z",
+        "mitre": [
+          {
+            "id": "T1190",
+            "link": "https://attack.mitre.org/techniques/T1190//",
+            "name_tactics": "Initial Access",
+            "name_technique": "Exploit Public-Facing Application",
+            "name_subtechnique": null
+          }
+        ],
+        "objectMarking": [
+          {
+            "id": "03ec5d32-5cca-4c24-8bbc-8cef8c4dcd3f",
+            "definition": "N-Health"
+          }
+        ],
+        "contexts": {
+          "domain": null,
+          "endpoint_type": "Network",
+          "os": null,
+          "user": null,
+          "user_priv": null,
+          "src_ip": [
+            "10.114.19.12"
+          ]
+        },
+        "events": [
+          {
+            "domain": null,
+            "dst_ip": [
+              "8.8.4.4"
+            ],
+            "dst_port": null,
+            "src_ip": null,
+            "src_port": null,
+            "user": null,
+            "ip_malicious": true,
+            "hash_malicious": true,
+            "hash": {
+              "sha1": null,
+              "sha256": null,
+              "md5": null
+            },
+            "file_name": null,
+            "file_size": null,
+            "file_path": null,
+            "cmd_line": null,
+            "parent_process": null,
+            "event_type": "THREAT"
+          }
+        ],
+        "sla": {
+          "mttd": 8,
+          "mtta": 8,
+          "mttt": 21,
+          "mtti": null,
+          "mttn": null,
+          "mttv": 119.08,
+          "mttr": null
+        }
+      }
+    },
+    "type": {
+      "prediction": {
+        "tactic": [],
+        "technique": [],
+        "subtechnique": []
+      },
+      "Mitre_Match": []
+    }
+  }
+]

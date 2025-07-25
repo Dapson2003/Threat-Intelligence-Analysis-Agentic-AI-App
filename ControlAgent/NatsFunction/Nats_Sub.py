@@ -1,17 +1,30 @@
 from config.Config import cfg
-from NatsFunction.Nats_Send_New import send_to_next_agent
 from NatsFunction.Nats_Client import nc  
 from nats.js.api import DeliverPolicy
+from control.nats_action import startFlow,finishedType,finishedFlow
 
 subscriptions = {}  # Track subscriptions by subject
 
 
+topic_handlers = {
+    "agent-test.Type":startFlow,
+    "agent-test.Context":finishedType,
+    "agent-test.Output":finishedFlow
+}
+
 async def message_handler(msg):
+    subject = msg.subject
     data_str = msg.data.decode("utf-8", errors="replace")
-    await send_to_next_agent(data_str)
+    #print(data_str)
+    handler = topic_handlers.get(subject)
+    if handler:
+        result = await handler(data_str)
+        print(f"[✓] Handled message on '{subject}' → {result}")
+    else:
+        print(f"[⚠️] No handler for subject: {subject}")
 
 
-async def start_nats_subscriber(subject: str):
+async def start_nats_subscriber(subject: str):  
     global subscriptions
     if not nc.is_connected:
         await nc.connect(cfg.NAT_SERVER_URL)
