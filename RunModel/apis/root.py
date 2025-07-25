@@ -8,9 +8,9 @@ root_router = APIRouter()
 async def root():
     return """
     <html>
-        <head><title>Agent Model API</title></head>
+        <head><title>Type Agent Model API</title></head>
         <body>
-            <h1>Welcome to the Agent Model API</h1>
+            <h1>Welcome to the type Agent Model API</h1>
             <p>ReadMe:</p>
             <ul>
             <li>To use normal API function, go to FastAPI Doc page</li>
