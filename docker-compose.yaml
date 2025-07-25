@@ -38,6 +38,19 @@ services:
     volumes:
       - ./ContextAgent_Script:/ContextAgent_Script
       
+  controlagent:
+    build:
+      context: ./controlagent
+      dockerfile: dockerfile
+    container_name: ControlAgent
+    ports:
+      - "9008:9008"
+    env_file:
+      - ./ControlAgent/.env
+    working_dir: /ControlAgent
+    volumes:
+      - ./ControlAgent:/ControlAgent
+
   # context_agent:
   #   build:
   #     context: ./ContextAgent
