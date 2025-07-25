@@ -25,7 +25,7 @@ async def lifespan(app: FastAPI):
     print("🔻 Shutting down — cleaning up NATS connection...")
     await CloseService()
 
-app = FastAPI(title="Agent Model API", lifespan=lifespan)
+app = FastAPI(title="Type Agent Model API", lifespan=lifespan)
 # Route registration
 app.include_router(root_router)  # Handles "/"
 app.include_router(predict_router, prefix="/api")
