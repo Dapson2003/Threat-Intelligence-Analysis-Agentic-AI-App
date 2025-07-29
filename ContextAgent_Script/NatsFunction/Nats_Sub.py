@@ -1,15 +1,38 @@
 from config.Config import cfg
-from NatsFunction.Nats_Send_New import send_to_next_agent
+from NatsFunction.Nats_Send_New import send_to_next_agent,send_to_next_agent_json
 from NatsFunction.Nats_Client import nc  
 from nats.js.api import DeliverPolicy
-
 subscriptions = {}  # Track subscriptions by subject
 
 
 async def message_handler(msg):
     data_str = msg.data.decode("utf-8", errors="replace")
-    await send_to_next_agent(data_str)
-    await msg.ack() 
+    print("📥 Received NATS message:")
+    await msg.ack()
+    print(repr(data_str))  # Shows hidden characters like \n, \t, etc.
+
+    if not data_str.strip():
+        print("⚠️ Skipping empty message.")
+        return None
+
+    try:
+        await send_to_next_agent_json(data_str)
+        #close service to avoid bug
+        """
+        Gracefully close the NATS subscription and connection.
+        """
+
+        # await stop_nats_subscriber(cfg.INPUT_SUBJECT)
+        # if nc.is_connected:
+        #     await nc.drain()
+        #     print("🧽 Drained NATS connection")
+        #     await nc.close()
+        #     print("🔌 NATS connection closed")
+            
+    except Exception as e:
+        print("❌ Error in send_to_next_agent_json:", e)
+
+
 
 async def start_nats_subscriber(subject: str):
     global subscriptions
@@ -32,8 +55,8 @@ async def start_nats_subscriber_with_js(subject: str, durable_name: str = "defau
     if queue_name:
         sub = await js.subscribe(
             subject,
-            cb=message_handler,
-            durable=durable_name
+            cb=message_handler
+            ,durable=durable_name
             #,queue=queue_name
             ,deliver_policy=DeliverPolicy.NEW
         )
