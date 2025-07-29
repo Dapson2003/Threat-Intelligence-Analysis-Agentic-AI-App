@@ -14,7 +14,7 @@ async def send_to_next_agent(data_str):
         #Run The Model and Publish the result
         result = predict_check_package(data_dict)
         Pub_Out = await publish_js_message(cfg.OUTPUT_SUBJECT, result)
-        print(f"Data Sucessfully Pub : {Pub_Out}")
+        #print(f"Data Sucessfully Pub : {Pub_Out}")
         with open("log.txt", "a", encoding="utf-8") as f:
             f.write({Pub_Out})
         
