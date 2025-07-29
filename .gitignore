@@ -29,3 +29,10 @@ ContextAgent/rag/vector_db/index.faiss
 ControlAgent/database/
 ControlAgent/database/type_log.json
 ControlAgent/database/context_log.json
+
+ControlAgent/database/type_log.json
+ControlAgent/database/start_log.json
+ControlAgent/database/context_log.json
+ControlAgent/database/context_log.json
+ControlAgent/database/start_log.json
+ControlAgent/database/type_log.json
