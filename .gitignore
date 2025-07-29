@@ -23,3 +23,9 @@ RunModel/model/**/*.pkl
 ContextAgent/temp/
 ContextAgent/rag/vector_db/index.pkl
 ContextAgent/rag/vector_db/index.faiss
+
+
+#Ignore In Control
+ControlAgent/database/
+ControlAgent/database/type_log.json
+ControlAgent/database/context_log.json
