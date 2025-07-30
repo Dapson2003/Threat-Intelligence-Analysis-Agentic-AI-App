@@ -7,9 +7,9 @@ subscriptions = {}  # Track subscriptions by subject
 
 
 topic_handlers = {
-    "agent-test.Type":startFlow,
-    "agent-test.Context":finishedType,
-    "agent-test.Output":finishedFlow
+    "agentAI.Type":startFlow,
+    "agentAI.Context":finishedType,
+    "agentAI.Output":finishedFlow
 }
 
 async def message_handler(msg):
