@@ -75,6 +75,9 @@ class AgentFactory:
         return run
 
 
+
+#The code after this is used for the nats recieving function
+
 # Initialize the agent only once at startup
 
 from contexts.compose_tools_data import compose_full_tools_data_from_log
@@ -83,12 +86,10 @@ from typing import Dict, Any
 agent_factory = AgentFactory()
 recommendation_agent = agent_factory.create_recommending_agent()
 
-
-
 # Function that will reuse the already created agent
 async def call_recommendation_agent_from_script(input_data: Dict[str, Any]) -> Dict[str, Any]:
     try:
-        print(input_data)
+        #print(input_data)
         # Validate or use fallback examples
         log_data = input_data.get("log", {}).get("node")  # or example_log["node"]
         type_data = input_data.get("type")  # or example_type
@@ -106,9 +107,6 @@ async def call_recommendation_agent_from_script(input_data: Dict[str, Any]) -> D
 
     except Exception as e:
         return {"status": "error", "detail": str(e)}
-
-
-
 
     # def create_recommending_agent(self):
     #     """

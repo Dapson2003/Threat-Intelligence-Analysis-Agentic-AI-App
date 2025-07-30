@@ -1,9 +1,0 @@
-*.pyc
-__pycache__/
-.env
-venvs/
-*.git
-log.txt
-temp/
-rag/vector_db/
-temp/

@@ -40,8 +40,6 @@ def extract_info_from_single_log(log: Dict[str, Any]) -> Dict[str, Any]:
         "src_ips": src_ips
     }
 
-
-
 # --- Main test entry ---
 
 def extract_info_from_single_log(log: Dict[str, Any]) -> Dict[str, Any]:
@@ -64,18 +62,17 @@ def extract_info_from_single_log(log: Dict[str, Any]) -> Dict[str, Any]:
         "src_ips": src_ips
     }
 
+# if __name__ == "__main__":
+#     sample_log = {
+#         "node": {
+#             "objectMarking": [{"definition": "N-Health"}],
+#             "contexts": {
+#                 "src_ip": ["10.1.2.3", "192.168.0.5"]
+#             }
+#         }
+#     }
+#     from tools.Example_Log_Keeper import example_log_body2 as sample_log
 
-if __name__ == "__main__":
-    # sample_log = {
-    #     "node": {
-    #         "objectMarking": [{"definition": "N-Health"}],
-    #         "contexts": {
-    #             "src_ip": ["10.1.2.3", "192.168.0.5"]
-    #         }
-    #     }
-    # }
-    from tools.Example_Log_Keeper import example_log_body2 as sample_log
 
-
-    extracted = extract_info_from_single_log(sample_log)
-    print("Extracted:", extracted)
+#     extracted = extract_info_from_single_log(sample_log)
+#     print("Extracted:", extracted)

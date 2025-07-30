@@ -1,3 +1,0 @@
-Put the index.pkl 
-which is the rag file here
-name it index (Should be default name for this code)

@@ -1,5 +1,3 @@
-# contexts/clientInfo/load_onboarding_context.py
-
 import json
 import os
 from typing import Dict, Any
