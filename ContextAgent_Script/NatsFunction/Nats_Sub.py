@@ -2,35 +2,53 @@ from config.Config import cfg
 from NatsFunction.Nats_Send_New import send_to_next_agent,send_to_next_agent_json
 from NatsFunction.Nats_Client import nc  
 from nats.js.api import DeliverPolicy
+from agents.create_single_agent import call_single_recommendation_agent
+from nats.js.api import ConsumerConfig
 subscriptions = {}  # Track subscriptions by subject
 
-
 async def message_handler(msg):
+
+    
+    subject = msg.subject
     data_str = msg.data.decode("utf-8", errors="replace")
-    print("📥 Received NATS message:")
-    await msg.ack()
-    print(repr(data_str))  # Shows hidden characters like \n, \t, etc.
+
+    print("📥 New NATS message received")
+    print(f"📨 Subject: {subject}")
+    print(f"🔁 Reply-to: {msg.reply}")
+    print(f"🧾 Raw message: {repr(data_str)}")
+
+    try:
+        meta = msg.metadata  # Correct usage
+        print("📦 JetStream Metadata:")
+        print(f"   • Stream: {meta.stream}")
+        print(f"   • Consumer: {meta.consumer}")
+        print(f"   • Sequence (Stream): {meta.sequence.stream}")
+        print(f"   • Sequence (Consumer): {meta.sequence.consumer}")
+        print(f"   • Timestamp: {meta.timestamp}")
+        print(f"   • Delivery Attempt: {meta.num_delivered}")
+        print(f"   • Pending: {meta.num_pending}")
+        if meta.num_delivered > 1:
+            print(f"   ⚠️ Redelivered (attempt #{meta.num_delivered})")
+    except Exception as e:
+        print("ℹ️ JetStream metadata not available or not a JetStream message.")
+        print(f"   ❌ Reason: {e}")
+
+    # # await msg.ack()
 
     if not data_str.strip():
-        print("⚠️ Skipping empty message.")
+        print("⚠️ Empty message — skipping.")
         return None
 
     try:
         await send_to_next_agent_json(data_str)
-        #close service to avoid bug
-        """
-        Gracefully close the NATS subscription and connection.
-        """
-
-        # await stop_nats_subscriber(cfg.INPUT_SUBJECT)
-        # if nc.is_connected:
-        #     await nc.drain()
-        #     print("🧽 Drained NATS connection")
-        #     await nc.close()
-        #     print("🔌 NATS connection closed")
-            
     except Exception as e:
-        print("❌ Error in send_to_next_agent_json:", e)
+        print("❌ Error during agent processing:", e)
+        print(f"📥 {msg.subject} - {repr(msg.data.decode())}")
+    finally :
+        await msg.ack()
+        print("✅ ACK sent")
+    
+
 
 
 
@@ -45,12 +63,15 @@ async def start_nats_subscriber(subject: str):
     
 async def start_nats_subscriber_with_js(subject: str, durable_name: str = "default_durable", queue_name: str = None):
     global subscriptions
-
+    
     if not nc.is_connected:
         await nc.connect(cfg.NAT_SERVER_URL)
 
     js = nc.jetstream()
-
+    
+    consumer_config1 = ConsumerConfig(
+        ack_wait=250
+    )
     # 🧠 Add `queue=...` if queue_name is provided
     if queue_name:
         sub = await js.subscribe(
@@ -59,6 +80,7 @@ async def start_nats_subscriber_with_js(subject: str, durable_name: str = "defau
             ,durable=durable_name
             #,queue=queue_name
             ,deliver_policy=DeliverPolicy.NEW
+            ,config = consumer_config1
         )
         #print(f"Subscribed with queue group: '{queue_name}'")
     else:

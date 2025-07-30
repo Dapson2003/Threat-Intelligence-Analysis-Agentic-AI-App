@@ -36,4 +36,4 @@ Your response must include:
 2. A short explanation of how each tool can help or be configured
 3. If no tools apply, include clear manual or generic investigation steps
 
-Make your answer technically sound, practical, and clear.
+Make your answer technically sound, practical, and clear02.
