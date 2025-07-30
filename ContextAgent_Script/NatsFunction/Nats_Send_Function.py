@@ -6,21 +6,73 @@ from config.Config import cfg
 subscribed_subject = None
 
 async def send_to_next_agent_json(data_str):
-  try:
-      data_dict = json.loads(data_str)
-      result_LLM_result = await call_recommendation_agent_from_script(data_dict)  #temp_clean #Use to debug without spending LLM resource.
-      result_json = json.loads(result_LLM_result.strip())
-      await publish_Js_message(cfg.OUTPUT_SUBJECT, result_json)
-      return result_json
-  except Exception as e:
-      error_json_package = {
-      "status": "error", 
-      "result": { 
-          "errorMessage" : e
-          }
-      }
-      await publish_Js_message(cfg.OUTPUT_SUBJECT, error_json_package)
-      return error_json_package
+    try:
+        data_dict = json.loads(data_str)
+
+        # Step 1: Call the recommendation agent
+        result_wrapper = await call_recommendation_agent_from_script(data_dict)
+
+        # Step 2: Convert outer wrapper if it's a JSON string
+        if isinstance(result_wrapper, str):
+            try:
+                result_wrapper = json.loads(result_wrapper)
+            except json.JSONDecodeError as e:
+                error_msg = f"Invalid top-level JSON string returned by agent: {e}"
+                print(f"❌ {error_msg}")
+                error_payload = {
+                    "status": "error",
+                    "message": error_msg,
+                    "raw": result_wrapper
+                }
+                await publish_Js_message(cfg.OUTPUT_SUBJECT, error_payload)
+                return error_payload
+
+        # Step 3: Validate it's a dict
+        if not isinstance(result_wrapper, dict):
+            error_msg = f"Agent output is not a dict. Got: {type(result_wrapper)}"
+            print(f"❌ {error_msg}")
+            error_payload = {
+                "status": "error",
+                "message": error_msg,
+                "raw": str(result_wrapper)
+            }
+            await publish_Js_message(cfg.OUTPUT_SUBJECT, error_payload)
+            return error_payload
+
+        # Step 4: Decode the 'result' field if it is a string
+        result_field = result_wrapper.get("result")
+        if isinstance(result_field, str):
+            try:
+                result_wrapper["result"] = json.loads(result_field)
+                print("✅ Decoded stringified result field into real JSON.")
+            except json.JSONDecodeError as e:
+                error_msg = f"'result' field is not valid JSON: {e}"
+                print(f"❌ {error_msg}")
+                error_payload = {
+                    "status": "error",
+                    "message": error_msg,
+                    "raw": result_wrapper
+                }
+                await publish_Js_message(cfg.OUTPUT_SUBJECT, error_payload)
+                return error_payload
+
+        # ✅ Step 5: Publish and return the full structure
+        await publish_Js_message(cfg.OUTPUT_SUBJECT, result_wrapper)
+        print("✅ Published full agent response to OUTPUT_SUBJECT.")
+        return result_wrapper
+
+    except Exception as e:
+        error_msg = f"Exception during processing: {e}"
+        print(f"❌ {error_msg}")
+        error_payload = {
+            "status": "error",
+            "message": error_msg,
+            "raw": data_str
+        }
+        await publish_Js_message(cfg.OUTPUT_SUBJECT, error_payload)
+        return error_payload
+
+
 
 """
 async def send_to_next_agent_json(data_str):

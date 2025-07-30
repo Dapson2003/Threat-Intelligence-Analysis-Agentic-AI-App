@@ -2,14 +2,13 @@ from config.Config import cfg
 from NatsFunction.Nats_Client import nc  
 from nats.js.api import DeliverPolicy
 from control.nats_action import startFlow,finishedType,finishedFlow
-
+from config.Config import cfg
 subscriptions = {}  # Track subscriptions by subject
 
-
 topic_handlers = {
-    "agentAI.Type":startFlow,
-    "agentAI.Context":finishedType,
-    "agentAI.Output":finishedFlow
+    cfg.INPUT_SUBJECT1: startFlow,
+    cfg.INPUT_SUBJECT2: finishedType,
+    cfg.INPUT_SUBJECT3: finishedFlow
 }
 
 async def message_handler(msg):
