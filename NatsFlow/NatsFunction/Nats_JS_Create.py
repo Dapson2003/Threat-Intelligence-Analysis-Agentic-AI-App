@@ -24,12 +24,12 @@ async def create_js_stream(input_stream: str, input_filter: dict):
             )
         )
         await js.stream_info("model_stream")  # Will raise NotFoundError if not created
-        print(f"✅ Stream '{stream_name}' created with subject(s): {subject_filter}")
+        print(f" Stream '{stream_name}' created with subject(s): {subject_filter}")
     except Exception as e:
         if "stream name already in use" in str(e).lower():
-            print(f"ℹ️ Stream '{stream_name}' already exists.")
+            print(f" Stream '{stream_name}' already exists.")
         else:
-            print(f"❌ Error creating stream: {e}")
+            print(f"Error creating stream: {e}")
 
     await nc.drain()
 

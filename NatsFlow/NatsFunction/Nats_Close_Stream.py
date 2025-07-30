@@ -14,7 +14,7 @@ async def close_jetstream_stream(nats_server_url: str, stream_name: str):
             with open("log.txt", "a", encoding="utf-8") as f:
                 f.write("found"+stream_name+"from"+ info.config.name)
         except NotFoundError:
-            print(f"⚠️ Stream '{stream_name}' not found.")
+            print(f" Stream '{stream_name}' not found.")
             return {"status": "not_found", "message": f"Stream '{stream_name}' does not exist."}
 
         # Try to delete the stream
@@ -23,7 +23,7 @@ async def close_jetstream_stream(nats_server_url: str, stream_name: str):
         return {"status": "success", "message": f"Stream '{stream_name}' deleted successfully."}
 
     except Exception as e:
-        print(f"❌ Unexpected error: {e}")
+        print(f"Unexpected error: {e}")
         return {"status": "error", "message": str(e)}
 
     finally:

@@ -21,7 +21,7 @@ async def message_handler(msg):
         result = await handler(data_str)
         print(f"[✓] Handled message on '{subject}' → {result}")
     else:
-        print(f"[⚠️] No handler for subject: {subject}")
+        print(f"[] No handler for subject: {subject}")
 
 
 async def start_nats_subscriber(subject: str):  
@@ -60,7 +60,7 @@ async def start_nats_subscriber_with_js(subject: str, durable_name: str = "defau
         print("Subscribed without queue group")
 
     subscriptions[subject] = sub
-    print(f"✅ Subscribed to JetStream subject: '{subject}', durable: '{durable_name}'")
+    print(f" Subscribed to JetStream subject: '{subject}', durable: '{durable_name}'")
 
 async def stop_nats_subscriber(subject: str):
     global subscriptions

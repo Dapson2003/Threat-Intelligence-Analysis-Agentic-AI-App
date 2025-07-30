@@ -18,12 +18,12 @@ async def create_js_stream(input_stream: str, input_filter: str):
                 storage="memory"
             )
         )
-        print(f"✅ Stream '{input_stream}' created.")
+        print(f" Stream '{input_stream}' created.")
     except Exception as e:
         if "stream name already in use" in str(e).lower():
-            print(f"ℹ️ Stream '{input_stream}' already exists.")
+            print(f" Stream '{input_stream}' already exists.")
         else:
-            print(f"❌ Error creating stream: {e}")
+            print(f"Error creating stream: {e}")
 
 
     await nc.drain()
